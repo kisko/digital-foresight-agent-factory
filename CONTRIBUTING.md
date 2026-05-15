@@ -8,7 +8,7 @@ improvements, documentation.
 ## Quick start
 
 ```bash
-git clone https://github.com/Equinor-Playground/digital-foresight-agent-factory.git
+git clone https://github.com/kisko/digital-foresight-agent-factory.git
 cd digital-foresight-agent-factory
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt

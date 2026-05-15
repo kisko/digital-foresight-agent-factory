@@ -1,6 +1,6 @@
 # Digital Foresight Agent Factory
 
-[![CI](https://github.com/Equinor-Playground/digital-foresight-agent-factory/actions/workflows/ci.yml/badge.svg)](https://github.com/Equinor-Playground/digital-foresight-agent-factory/actions/workflows/ci.yml)
+[![CI](https://github.com/kisko/digital-foresight-agent-factory/actions/workflows/ci.yml/badge.svg)](https://github.com/kisko/digital-foresight-agent-factory/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 
@@ -35,7 +35,7 @@ swap-in point.
 ## Quick start
 
 ```bash
-git clone https://github.com/Equinor-Playground/digital-foresight-agent-factory.git
+git clone https://github.com/kisko/digital-foresight-agent-factory.git
 cd digital-foresight-agent-factory
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
