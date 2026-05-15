@@ -40,6 +40,7 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(name)s] %(message
 log = logging.getLogger("api")
 
 DASHBOARD_HTML = Path(__file__).parent.parent / "dashboard" / "index.html"
+ARCHITECTURE_HTML = Path(__file__).parent.parent / "docs" / "architecture-presentation.html"
 
 # ─── module-level singletons (lifespan-managed) ────────────────────────────
 store: Optional[KnowledgeStore] = None
@@ -109,6 +110,11 @@ async def _ws_pump():
 @app.get("/")
 def root():
     return FileResponse(DASHBOARD_HTML)
+
+
+@app.get("/architecture")
+def architecture():
+    return FileResponse(ARCHITECTURE_HTML)
 
 
 # ─── Signals ───────────────────────────────────────────────────────────────

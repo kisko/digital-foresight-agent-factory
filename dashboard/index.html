@@ -17,14 +17,17 @@
     margin:0; background:var(--bg); color:var(--text);
     font:14px -apple-system, BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
   }
+
+  /* ── header ── */
   header {
     padding:14px 24px; border-bottom:1px solid var(--border);
-    display:flex; align-items:center; gap:16px;
+    display:flex; align-items:center; gap:16px; flex-wrap:wrap;
     background:linear-gradient(180deg, rgba(255,126,58,0.06), transparent);
+    position:sticky; top:0; z-index:10; backdrop-filter:blur(10px);
   }
   header h1 { margin:0; font-size:18px; font-weight:600; letter-spacing:-0.01em; }
   header .subtitle { color:var(--muted); font-size:12px; }
-  header .right { margin-left:auto; display:flex; gap:8px; align-items:center; }
+  header .right { margin-left:auto; display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
   .badge {
     padding:2px 8px; border-radius:999px; font-size:11px;
     background:rgba(56,193,255,0.15); color:var(--accent2);
@@ -34,6 +37,21 @@
   .dot { width:8px; height:8px; border-radius:50%; background:var(--err); display:inline-block; }
   .dot.ok { background:var(--ok); }
 
+  .btn {
+    background:var(--accent); color:#1a1a1a; border:0;
+    padding:6px 12px; border-radius:6px; font-weight:600; cursor:pointer;
+    font-size:12px; font-family:inherit;
+  }
+  .btn:hover { filter:brightness(1.1); }
+  .btn.secondary {
+    background:transparent; color:var(--accent2); border:1px solid var(--accent2);
+  }
+  .btn.ghost {
+    background:transparent; color:var(--muted); border:1px solid var(--border);
+  }
+  .btn.ghost:hover { color:var(--text); border-color:var(--text); }
+
+  /* ── layout ── */
   .grid {
     display:grid; grid-template-columns: 1fr 380px;
     gap:16px; padding:16px 24px;
@@ -42,22 +60,90 @@
     background:var(--panel); border:1px solid var(--border);
     border-radius:12px; padding:14px 16px;
   }
+  .panel + .panel { margin-top:16px; }
   .panel h2 {
-    margin:0 0 10px; font-size:13px; font-weight:600; text-transform:uppercase;
+    margin:0 0 4px; font-size:13px; font-weight:600; text-transform:uppercase;
     letter-spacing:0.08em; color:var(--muted);
+    display:flex; align-items:center; gap:8px;
+  }
+  .panel .caption {
+    color:var(--muted); font-size:12px; margin:0 0 12px; line-height:1.5;
+  }
+  .panel .caption b { color:var(--text); }
+
+  /* ── info tooltip ── */
+  .info {
+    display:inline-flex; align-items:center; justify-content:center;
+    width:14px; height:14px; border-radius:50%;
+    background:rgba(255,255,255,0.1); color:var(--muted);
+    font-size:10px; font-weight:700; cursor:help;
+    font-family:Georgia, serif; font-style:italic;
+  }
+  .info:hover { background:var(--accent2); color:#0c1118; }
+  [data-tip] { position:relative; }
+  [data-tip]::after {
+    content:attr(data-tip);
+    position:absolute; bottom:calc(100% + 6px); left:50%;
+    transform:translateX(-50%);
+    background:#0c1118; color:var(--text);
+    border:1px solid var(--border); border-radius:6px;
+    padding:6px 10px; font-size:11px; white-space:pre-wrap; width:max-content;
+    max-width:280px; opacity:0; pointer-events:none; transition:opacity 0.15s;
+    z-index:50; text-transform:none; letter-spacing:0; font-weight:400; line-height:1.4;
+  }
+  [data-tip]:hover::after { opacity:1; }
+
+  /* ── intro panel ── */
+  .intro {
+    background:linear-gradient(135deg, rgba(255,126,58,0.08), rgba(56,193,255,0.08));
+    border:1px solid rgba(56,193,255,0.2);
+  }
+  .intro .head {
+    display:flex; align-items:center; justify-content:space-between; cursor:pointer;
+  }
+  .intro h2 {
+    color:var(--accent2); text-transform:none; letter-spacing:0; font-size:15px;
+    margin:0; font-weight:600;
+  }
+  .intro .body { margin-top:12px; }
+  .intro.collapsed .body { display:none; }
+  .intro .toggle { color:var(--muted); font-size:11px; }
+
+  .steps { display:grid; grid-template-columns: repeat(3, 1fr); gap:14px; margin-top:8px; }
+  .step-card {
+    background:rgba(255,255,255,0.03); border:1px solid var(--border);
+    border-radius:8px; padding:12px;
+  }
+  .step-card .num {
+    width:24px; height:24px; border-radius:50%;
+    background:var(--accent); color:#1a1a1a; font-weight:700;
+    display:inline-flex; align-items:center; justify-content:center;
+    font-size:13px; margin-bottom:8px;
+  }
+  .step-card h3 { margin:0 0 6px; font-size:13px; font-weight:600; }
+  .step-card p { margin:0; font-size:12px; line-height:1.5; color:var(--muted); }
+  .step-card p code {
+    background:rgba(255,255,255,0.08); padding:1px 5px; border-radius:4px;
+    font-size:11px; color:var(--accent);
   }
 
-  /* pipeline stages */
+  /* ── pipeline stages ── */
   .stages { display:flex; gap:6px; align-items:stretch; }
   .stage {
     flex:1; padding:10px 8px; text-align:center;
     background:var(--panel2); border-radius:8px;
-    border-top:3px solid var(--accent2); cursor:default;
-    transition:all 0.2s;
+    border-top:3px solid var(--accent2); cursor:help;
+    transition:all 0.2s; position:relative;
   }
   .stage .n { font-size:22px; font-weight:700; }
-  .stage .lbl { font-size:11px; color:var(--muted); margin-top:2px;
-    text-transform:uppercase; letter-spacing:0.05em; }
+  .stage .lbl {
+    font-size:11px; color:var(--muted); margin-top:2px;
+    text-transform:uppercase; letter-spacing:0.05em;
+  }
+  .stage .who {
+    font-size:9px; color:var(--accent); margin-top:4px;
+    font-family:"SF Mono",Menlo,monospace; letter-spacing:0;
+  }
   .stage.pulse { animation:pulse 0.6s; }
   @keyframes pulse {
     0% { transform:scale(1); box-shadow:0 0 0 rgba(56,193,255,0); }
@@ -66,25 +152,36 @@
   }
   .arrow { color:var(--accent); font-size:18px; align-self:center; }
 
-  /* insights list */
+  /* ── agents ── */
+  .tier-group { margin-bottom:10px; }
+  .tier-group:last-child { margin-bottom:0; }
+  .tier-label {
+    font-size:10px; color:var(--muted); text-transform:uppercase;
+    letter-spacing:0.08em; margin-bottom:6px;
+  }
+  .agents-row { display:flex; flex-wrap:wrap; gap:6px; }
+  .agent-chip {
+    padding:4px 10px; border-radius:999px; font-size:11px;
+    background:rgba(255,255,255,0.04); border:1px solid var(--border);
+    font-family:"SF Mono",Menlo,monospace; cursor:help;
+  }
+  .agent-chip.t0 { color:var(--tier0); border-color:rgba(255,126,58,0.4); }
+  .agent-chip.t1 { color:var(--tier1); border-color:rgba(56,193,255,0.4); }
+  .agent-chip.t2 { color:var(--tier2); border-color:rgba(179,136,255,0.4); }
+  .agent-chip.t3 { color:var(--tier3); border-color:rgba(102,231,164,0.4); }
+
+  /* ── insights ── */
   .insight {
     background:var(--panel2); border-radius:10px; padding:12px 14px;
     margin-bottom:10px; border-left:3px solid var(--accent);
   }
   .insight h3 { margin:0 0 6px; font-size:14px; font-weight:600; }
-  .insight .meta { color:var(--muted); font-size:11px; margin-bottom:8px;
-    font-family:"SF Mono",Menlo,monospace; }
+  .insight .meta {
+    color:var(--muted); font-size:11px; margin-bottom:8px;
+    font-family:"SF Mono",Menlo,monospace;
+  }
   .insight .summary { font-size:13px; line-height:1.4; color:#d6deea; }
   .insight .actions { margin-top:10px; display:flex; gap:8px; }
-  .btn {
-    background:var(--accent); color:#1a1a1a; border:0;
-    padding:6px 12px; border-radius:6px; font-weight:600; cursor:pointer;
-    font-size:12px;
-  }
-  .btn:hover { filter:brightness(1.1); }
-  .btn.secondary {
-    background:transparent; color:var(--accent2); border:1px solid var(--accent2);
-  }
   .insight.approved { border-left-color:var(--ok); opacity:0.7; }
   .insight.published { border-left-color:var(--tier3); }
   .pill {
@@ -93,10 +190,17 @@
     background:rgba(255,255,255,0.08); margin-right:4px;
   }
 
-  /* event stream */
+  .toolbar { display:flex; gap:8px; margin-bottom:12px; }
+  .toolbar input {
+    background:var(--panel2); border:1px solid var(--border); color:var(--text);
+    padding:6px 10px; border-radius:6px; font:inherit; flex:1;
+  }
+  .empty { color:var(--muted); font-size:12px; text-align:center; padding:20px; }
+
+  /* ── event stream ── */
   .stream {
-    height:calc(100vh - 220px); overflow-y:auto; font-family:"SF Mono",Menlo,monospace;
-    font-size:11px;
+    height:calc(100vh - 220px); overflow-y:auto;
+    font-family:"SF Mono",Menlo,monospace; font-size:11px;
   }
   .ev {
     padding:6px 8px; border-bottom:1px solid var(--border);
@@ -117,26 +221,29 @@
   .ev .agent { color:var(--muted); }
   .ev .pl { color:#cfd6e0; }
 
-  /* agents bar */
-  .agents-row { display:flex; flex-wrap:wrap; gap:6px; }
-  .agent-chip {
-    padding:4px 10px; border-radius:999px; font-size:11px;
-    background:rgba(255,255,255,0.04); border:1px solid var(--border);
-    font-family:"SF Mono",Menlo,monospace;
+  .legend { display:grid; grid-template-columns:1fr; gap:3px; margin-bottom:10px;
+    font-size:10px; font-family:"SF Mono",Menlo,monospace;
   }
-  .agent-chip.t0 { color:var(--tier0); border-color:rgba(255,126,58,0.4); }
-  .agent-chip.t1 { color:var(--tier1); border-color:rgba(56,193,255,0.4); }
-  .agent-chip.t2 { color:var(--tier2); border-color:rgba(179,136,255,0.4); }
-  .agent-chip.t3 { color:var(--tier3); border-color:rgba(102,231,164,0.4); }
+  .legend .row { display:flex; gap:6px; }
+  .legend .row .t { font-weight:700; min-width:140px; }
+  .legend .row .d { color:var(--muted); font-family:inherit;
+    font:11px -apple-system,sans-serif; }
 
-  .toolbar { display:flex; gap:8px; margin-bottom:12px; }
-  .toolbar input {
-    background:var(--panel2); border:1px solid var(--border); color:var(--text);
-    padding:6px 10px; border-radius:6px; font:inherit; flex:1;
+  /* ── glossary ── */
+  .glossary.collapsed .body { display:none; }
+  .glossary .head {
+    display:flex; align-items:center; justify-content:space-between; cursor:pointer;
   }
+  .glossary dl { margin:8px 0 0; display:grid; grid-template-columns: 130px 1fr;
+    gap:6px 14px; font-size:13px; }
+  .glossary dt {
+    color:var(--accent); font-weight:600; font-family:"SF Mono",Menlo,monospace;
+    font-size:12px;
+  }
+  .glossary dd { margin:0; color:var(--muted); line-height:1.45; }
+  .glossary dd b { color:var(--text); }
 
-  .empty { color:var(--muted); font-size:12px; text-align:center; padding:20px; }
-
+  /* ── modal ── */
   .modal {
     position:fixed; inset:0; background:rgba(0,0,0,0.6);
     display:none; align-items:center; justify-content:center; z-index:50;
@@ -148,48 +255,165 @@
   }
   .modal pre { white-space:pre-wrap; font:13px/1.5 -apple-system, sans-serif; }
   .close { float:right; cursor:pointer; color:var(--muted); }
+
+  @media (max-width: 980px) {
+    .grid { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr; }
+    .stream { height:300px; }
+  }
 </style>
 </head>
 <body>
+
 <header>
   <h1>🏭 Foresight Factory</h1>
   <div class="subtitle">live event stream · agent factory prototype</div>
   <div class="right">
-    <span id="llm-badge" class="badge">llm: …</span>
-    <span class="badge"><span id="ws-dot" class="dot"></span> <span id="ws-state">connecting…</span></span>
-    <button class="btn secondary" onclick="trigger()">▶ Trigger ingestion</button>
+    <button class="btn ghost" onclick="toggleIntro()">📖 How it works</button>
+    <a class="btn ghost" href="/architecture" target="_blank">📐 Architecture deck</a>
+    <span id="llm-badge" class="badge" data-tip="LLM mode. 'stub' = deterministic local stubs (no API keys needed). 'azure' = real Azure OpenAI calls (set AZURE_OPENAI_KEY in .env to enable).">llm: …</span>
+    <span class="badge" data-tip="WebSocket connection to the event bus. Green = receiving live events from agents."><span id="ws-dot" class="dot"></span> <span id="ws-state">connecting…</span></span>
+    <button class="btn" onclick="trigger()" data-tip="Ingest the 18 sample signals from data/sample_signals.json. Watch them flow through the pipeline.">▶ Trigger demo</button>
   </div>
 </header>
 
 <div class="grid">
   <div>
+
+    <!-- ── INTRO PANEL ── -->
+    <div class="panel intro" id="intro">
+      <div class="head" onclick="toggleIntro()">
+        <h2>👋 What is this, and how do I use it?</h2>
+        <span class="toggle" id="intro-toggle">collapse ▴</span>
+      </div>
+      <div class="body">
+        <p class="caption" style="margin-top:8px">
+          This is a <b>multi-agent digital foresight factory</b> running locally on your machine. It ingests raw signals (research, regulation, releases, incidents, M&amp;A), enriches them, clusters them into storylines, drafts decision-relevant <b>insights</b>, and publishes <b>briefs</b> after human approval. Every output is traceable back to source.
+        </p>
+        <div class="steps">
+          <div class="step-card">
+            <div class="num">1</div>
+            <h3>Trigger ingestion</h3>
+            <p>Click <b>▶ Trigger demo</b> in the header. Agent <code>b1.ingestion</code> reads 18 sample signals. Watch the <b>Pipeline stages</b> below light up as each agent fires — events stream on the right.</p>
+          </div>
+          <div class="step-card">
+            <div class="num">2</div>
+            <h3>Review the insights</h3>
+            <p>After ~1 second, drafts appear in <b>Insights queue</b>. Each is built from a cluster of related signals and shows confidence, time horizon, and recommended actions. Click any title to read the full draft.</p>
+          </div>
+          <div class="step-card">
+            <div class="num">3</div>
+            <h3>Approve to publish</h3>
+            <p>Click <b>Approve →</b> on a draft. The <b>policy gate</b> (<code>a1.policy</code>) re-checks it, then <code>b6.publish</code> writes a Markdown brief to <code>data/products/</code>. The <b>Published</b> stage counter ticks up.</p>
+          </div>
+        </div>
+        <p class="caption" style="margin-top:14px; font-size:11px">
+          ↪️ Full architecture, Azure deployment, and design rationale: <a href="/architecture" target="_blank" style="color:var(--accent2)">open the deck</a>. Source code: <a href="https://github.com/kisko/digital-foresight-agent-factory" target="_blank" style="color:var(--accent2)">github.com/kisko/digital-foresight-agent-factory</a>.
+        </p>
+      </div>
+    </div>
+
+    <!-- ── PIPELINE STAGES ── -->
     <div class="panel">
-      <h2>Pipeline stages</h2>
+      <h2>
+        Pipeline stages
+        <span class="info" data-tip="The 7-stage workflow. Each stage is owned by one agent. Counts show how many objects are *currently in* that stage. Numbers stay low because objects advance immediately to the next stage — they don't pile up.">i</span>
+      </h2>
+      <p class="caption">
+        Signals flow <b>left → right</b>. Each box is one stage of the production line, owned by one agent. Hover any stage for what happens there.
+      </p>
       <div id="stages" class="stages"></div>
     </div>
 
-    <div class="panel" style="margin-top:16px">
-      <h2>Active agents</h2>
-      <div id="agents" class="agents-row"></div>
+    <!-- ── AGENTS ── -->
+    <div class="panel">
+      <h2>
+        Active agents
+        <span class="info" data-tip="All agents currently subscribed to the event bus. Colored by tier: orange = Tier 0 (control plane), blue = Tier 1 (production line), green = Tier 3 (domain pods). Hover any chip to see what it does.">i</span>
+      </h2>
+      <p class="caption">
+        <b style="color:var(--tier0)">Tier 0</b> = control plane (orchestration, policy, evals, knowledge store) ·
+        <b style="color:var(--tier1)">Tier 1</b> = production line (B1–B6) ·
+        <b style="color:var(--tier3)">Tier 3</b> = domain pods. Tier 2 (intelligence upgrades) is stubbed for the prototype — see <a href="https://github.com/kisko/digital-foresight-agent-factory/issues" target="_blank" style="color:var(--accent2)">open issues</a> to contribute.
+      </p>
+      <div id="agents"></div>
     </div>
 
-    <div class="panel" style="margin-top:16px">
-      <h2>Insights queue · click an insight to read · approve to publish</h2>
+    <!-- ── INSIGHTS ── -->
+    <div class="panel">
+      <h2>
+        Insights queue · human approval gate
+        <span class="info" data-tip="Drafts wait here for approval. This is the human-in-the-loop hard gate from the architecture: nothing publishes without explicit human approval. In production this would be a Teams adaptive card; here it's a button.">i</span>
+      </h2>
+      <p class="caption">
+        Drafts written by <code style="color:var(--accent)">b5.insight</code> wait here. Click <b>Approve →</b> to fire the gate: <code style="color:var(--accent)">a0.orchestrator</code> emits <code style="color:var(--accent2)">insight.approved</code>, <code style="color:var(--accent)">a1.policy</code> re-checks, and <code style="color:var(--accent)">b6.publish</code> writes a Markdown brief.
+      </p>
       <div class="toolbar">
         <input type="text" id="filter" placeholder="filter by title / cluster / status…" oninput="renderInsights()">
       </div>
       <div id="insights"></div>
     </div>
 
-    <div class="panel" style="margin-top:16px">
-      <h2>Published products</h2>
+    <!-- ── PRODUCTS ── -->
+    <div class="panel">
+      <h2>
+        Published products
+        <span class="info" data-tip="Markdown briefs written by b6.publish to data/products/. In the Azure architecture, this is where SharePoint / Teams / Outlook fan-out via Microsoft Graph would go.">i</span>
+      </h2>
+      <p class="caption">
+        Approved insights become Markdown briefs in <code style="color:var(--accent)">data/products/</code>. Click any to read. In production these would publish to SharePoint, Teams, and Outlook via Microsoft Graph.
+      </p>
       <div id="products"></div>
     </div>
+
+    <!-- ── GLOSSARY ── -->
+    <div class="panel glossary collapsed" id="glossary">
+      <div class="head" onclick="toggleGlossary()">
+        <h2>📖 Glossary <span style="font-weight:400; text-transform:none; letter-spacing:0; font-size:11px; color:var(--muted)">— the key concepts in one place</span></h2>
+        <span class="toggle" id="glossary-toggle" style="color:var(--muted); font-size:11px">expand ▾</span>
+      </div>
+      <div class="body">
+        <dl>
+          <dt>Signal</dt><dd>A single piece of raw content from a source — a headline + body. Has a hash, source, URL, fetched timestamp. <b>Stored immutably</b> in the Knowledge Store.</dd>
+          <dt>Enrichment</dt><dd>Adding structure to a signal: summary, named entities (ORG/TECH/GEO/PERSON), taxonomy labels, signal type (regulation / research / incident / funding / release / patent).</dd>
+          <dt>Score</dt><dd>Relevance, novelty, urgency, impact — each 0–1. Plus a 2–3 bullet rationale for <i>why this matters for The Company</i>.</dd>
+          <dt>Cluster</dt><dd>A group of related signals forming a <b>storyline</b>. Grouped here by primary taxonomy + similarity. Has a label, descriptor, burst score, and updated-at.</dd>
+          <dt>Insight</dt><dd>A decision-relevant <b>draft</b> built from a cluster: what happened, evidence (citations), implications, time horizon, uncertainties, confidence level, recommended actions. Has two views: Exec one-pager + Analyst detail.</dd>
+          <dt>Approval gate</dt><dd>The human-in-the-loop checkpoint: insights only become <code>approved</code> when a reviewer clicks Approve. Hardcoded by <code>a0.orchestrator</code> + re-validated by <code>a1.policy</code>.</dd>
+          <dt>Product</dt><dd>A published artifact (Markdown brief here, in production: SharePoint page / Teams card / weekly email). Carries trace metadata back to insight → cluster → signals → raw source.</dd>
+          <dt>Agent</dt><dd>A small, single-responsibility component implementing the <code>BaseAgent</code> contract: subscribe to event topic(s), handle one event, emit downstream events. Versioned for traceability.</dd>
+          <dt>Event</dt><dd>A typed message on the bus. Every transition between stages is an event. Drives the entire pipeline asynchronously — no agent calls another directly.</dd>
+          <dt>Event bus</dt><dd>The publish/subscribe backbone. In the prototype: in-process Python pub/sub. In Azure: <b>Azure Service Bus topics</b>.</dd>
+          <dt>Knowledge Store</dt><dd>Three things stitched together: <b>Blob</b> for raw artifacts (immutable), <b>structured store</b> for signals/clusters/insights, <b>vector index</b> for similarity search + retrieval. Azure: Blob + Cosmos DB + AI Search.</dd>
+          <dt>Tier 0–3</dt><dd><b>Tier 0</b>: control plane (4 agents, stable, trusted). <b>Tier 1</b>: production line (6 agents, the pipeline). <b>Tier 2</b>: intelligence upgrades (5 agents — credibility, red team, trajectory, scenarios, impact — fire on demand). <b>Tier 3</b>: domain pods (compose 0–2 for a specific domain).</dd>
+        </dl>
+      </div>
+    </div>
+
   </div>
 
+  <!-- ── SIDEBAR: LIVE EVENT STREAM ── -->
   <div>
     <div class="panel">
-      <h2>Live event stream</h2>
+      <h2>
+        Live event stream
+        <span class="info" data-tip="Every event on the bus, newest first. This is the actual messaging that drives the pipeline — no agent calls another directly. In Azure: this is what flows through Service Bus topics.">i</span>
+      </h2>
+      <p class="caption" style="margin-bottom:8px">
+        Newest first. Each event drives one or more agents.
+      </p>
+      <div class="legend">
+        <div class="row"><span class="t" style="color:#9aa6b8">signal.created</span><span class="d">raw signal ingested</span></div>
+        <div class="row"><span class="t" style="color:#a9b2c2">signal.enriched</span><span class="d">summary + entities + taxonomy applied</span></div>
+        <div class="row"><span class="t" style="color:#38c1ff">signal.scored</span><span class="d">relevance / novelty / urgency scored</span></div>
+        <div class="row"><span class="t" style="color:#b388ff">cluster.updated</span><span class="d">new cluster or signal joined one</span></div>
+        <div class="row"><span class="t" style="color:#ff7e3a">insight.created</span><span class="d">draft written from a cluster</span></div>
+        <div class="row"><span class="t" style="color:#66e7a4">insight.approved</span><span class="d">human approval gate passed</span></div>
+        <div class="row"><span class="t" style="color:#66e7a4">product.published</span><span class="d">brief written to disk</span></div>
+        <div class="row"><span class="t" style="color:#66e7a4">policy.pass</span><span class="d">A1 cleared this object</span></div>
+        <div class="row"><span class="t" style="color:#ef476f">policy.block</span><span class="d">A1 blocked it — reason in payload</span></div>
+        <div class="row"><span class="t" style="color:#ef476f">agent.error</span><span class="d">an agent threw an exception</span></div>
+      </div>
       <div id="stream" class="stream"></div>
     </div>
   </div>
@@ -203,41 +427,98 @@
 </div>
 
 <script>
+// ── stage definitions (label + what + which agent) ─────────────────
 const STAGES = [
-  {key:"signal",    label:"Signal"},
-  {key:"enriched",  label:"Enriched"},
-  {key:"scored",    label:"Scored"},
-  {key:"clustered", label:"Clustered"},
-  {key:"insight",   label:"Insight"},
-  {key:"approved",  label:"Approved"},
-  {key:"published", label:"Published"},
+  { key:"signal",    label:"Signal",    who:"b1.ingestion",
+    tip:"A new raw signal landed in the Knowledge Store. b1.ingestion has stored the raw artifact + a Signal header. Next: b2 enriches." },
+  { key:"enriched",  label:"Enriched",  who:"b2.normalize",
+    tip:"b2.normalize has added a 2-sentence summary, extracted entities, assigned taxonomy + signal type. Next: b3 scores." },
+  { key:"scored",    label:"Scored",    who:"b3.relevance",
+    tip:"b3.relevance has computed relevance/novelty/urgency/impact and attached routing tags + 'why this matters' rationale. Next: b4 clusters." },
+  { key:"clustered", label:"Clustered", who:"b4.cluster",
+    tip:"b4.cluster has grouped this signal into a storyline (cluster) by primary taxonomy. Each cluster.updated event may trigger b5 to draft an insight." },
+  { key:"insight",   label:"Insight",   who:"b5.insight",
+    tip:"b5.insight has drafted an insight for a cluster: what happened, evidence, implications, time horizon, uncertainties, actions. Waiting for human approval." },
+  { key:"approved",  label:"Approved",  who:"human + a0",
+    tip:"A human clicked Approve. a0.orchestrator + a1.policy verified, then handed off to b6 for publishing." },
+  { key:"published", label:"Published", who:"b6.publish",
+    tip:"b6.publish has written a Markdown brief to data/products/ and emitted product.published. In Azure: SharePoint / Teams / Outlook fan-out." },
 ];
+
+const AGENT_ROLES = {
+  "a0.orchestrator":       { tier:"t0", role:"Runs the workflow state machine. Routes work, allocates compute budget, owns the approval gate." },
+  "a1.policy":             { tier:"t0", role:"Governance gate. Citation check, classification, source allow-list. Blocks before publish." },
+  "a2.evals":              { tier:"t0", role:"Measures quality + drift. Gates promotion of new agent versions. Stub in this prototype." },
+  "a3.librarian":          { tier:"t0", role:"Owns the Knowledge Store: storage, embeddings, retrieval packs, provenance." },
+  "b1.ingestion":          { tier:"t1", role:"Pulls signals from sources. In the prototype, reads from data/sample_signals.json." },
+  "b2.normalize":          { tier:"t1", role:"Cleans + summarizes, extracts entities, assigns taxonomy + signal type." },
+  "b3.relevance":          { tier:"t1", role:"Scores relevance / novelty / urgency / impact. Adds 'why this matters for The Company' rationale." },
+  "b4.cluster":            { tier:"t1", role:"Deduplicates and groups signals into storylines (clusters) by primary taxonomy + similarity." },
+  "b5.insight":            { tier:"t1", role:"Drafts an insight per qualifying cluster: what happened, evidence, implications, actions." },
+  "b6.publish":            { tier:"t1", role:"Renders approved insights to Markdown briefs. In Azure: publishes to SharePoint / Teams / Outlook." },
+  "pod.digital_ai.lead":   { tier:"t3", role:"Digital/AI pod synthesizer (skeleton). Adopts insights matching the pod's taxonomy for weekly synthesis." },
+};
 
 let state = { insights: [], products: [], agents: [] };
 
+// ── intro / glossary toggles (persisted in localStorage) ──────────
+function toggleIntro(){
+  const el = document.getElementById('intro');
+  el.classList.toggle('collapsed');
+  document.getElementById('intro-toggle').textContent =
+    el.classList.contains('collapsed') ? 'expand ▾' : 'collapse ▴';
+  localStorage.setItem('dash.intro.collapsed', el.classList.contains('collapsed'));
+}
+function toggleGlossary(){
+  const el = document.getElementById('glossary');
+  el.classList.toggle('collapsed');
+  document.getElementById('glossary-toggle').textContent =
+    el.classList.contains('collapsed') ? 'expand ▾' : 'collapse ▴';
+  localStorage.setItem('dash.glossary.collapsed', el.classList.contains('collapsed'));
+}
+// apply persisted state on load
+if (localStorage.getItem('dash.intro.collapsed') === 'true') {
+  document.getElementById('intro').classList.add('collapsed');
+  document.getElementById('intro-toggle').textContent = 'expand ▾';
+}
+if (localStorage.getItem('dash.glossary.collapsed') === 'false') {
+  document.getElementById('glossary').classList.remove('collapsed');
+  document.getElementById('glossary-toggle').textContent = 'collapse ▴';
+}
+
+// ── renderers ──────────────────────────────────────────────────────
 function renderStages(counts){
   const el = document.getElementById('stages');
   el.innerHTML = STAGES.map((s, i) => `
     ${i>0 ? '<span class="arrow">→</span>' : ''}
-    <div class="stage" data-stage="${s.key}">
+    <div class="stage" data-stage="${s.key}" data-tip="${s.tip}">
       <div class="n">${counts[s.key] || 0}</div>
       <div class="lbl">${s.label}</div>
+      <div class="who">${s.who}</div>
     </div>
   `).join('');
 }
 
-function tierFor(name){
-  if (name.startsWith('a')) return 't0';
-  if (name.startsWith('b')) return 't1';
-  if (name.startsWith('c')) return 't2';
-  if (name.startsWith('pod')) return 't3';
-  return '';
-}
-
 function renderAgents(){
-  document.getElementById('agents').innerHTML = state.agents
-    .map(a => `<span class="agent-chip ${tierFor(a.name)}">${a.name}<span style="color:var(--muted)"> v${a.version}</span></span>`)
-    .join('');
+  const byTier = {t0:[], t1:[], t2:[], t3:[]};
+  state.agents.forEach(a => {
+    const info = AGENT_ROLES[a.name] || {tier:'t0', role:'(no description)'};
+    byTier[info.tier].push({...a, ...info});
+  });
+  const tierLabels = {
+    t0: 'Tier 0 — Control plane',
+    t1: 'Tier 1 — Production line',
+    t2: 'Tier 2 — Intelligence upgrades',
+    t3: 'Tier 3 — Domain pods',
+  };
+  const html = ['t0','t1','t2','t3'].map(t => {
+    if (!byTier[t].length) return '';
+    const chips = byTier[t].map(a =>
+      `<span class="agent-chip ${t}" data-tip="${a.role}">${a.name}<span style="color:var(--muted)"> v${a.version}</span></span>`
+    ).join('');
+    return `<div class="tier-group"><div class="tier-label">${tierLabels[t]}</div><div class="agents-row">${chips}</div></div>`;
+  }).join('');
+  document.getElementById('agents').innerHTML = html;
 }
 
 function renderInsights(){
@@ -247,7 +528,7 @@ function renderInsights(){
     || i.status.includes(filter) || (i.cluster_id||'').includes(filter)
   );
   if (!list.length){
-    document.getElementById('insights').innerHTML = '<div class="empty">No insights yet. Trigger ingestion above.</div>';
+    document.getElementById('insights').innerHTML = '<div class="empty">No insights yet. Click <b>▶ Trigger demo</b> in the header to start the pipeline.</div>';
     return;
   }
   document.getElementById('insights').innerHTML = list.map(i => `
@@ -262,7 +543,7 @@ function renderInsights(){
       </div>
       <div class="summary">${i.exec_summary}</div>
       <div class="actions">
-        ${i.status === 'draft' ? `<button class="btn" onclick="approve('${i.id}')">Approve →</button>` : ''}
+        ${i.status === 'draft' ? `<button class="btn" onclick="approve('${i.id}')" data-tip="Fires the human approval gate. a0.orchestrator marks the insight approved, a1.policy re-checks, then b6.publish writes a Markdown brief.">Approve →</button>` : ''}
         <button class="btn secondary" onclick="openInsight('${i.id}')">View detail</button>
       </div>
     </div>
@@ -271,7 +552,7 @@ function renderInsights(){
 
 function renderProducts(){
   if (!state.products.length){
-    document.getElementById('products').innerHTML = '<div class="empty">No products published yet.</div>';
+    document.getElementById('products').innerHTML = '<div class="empty">No products published yet. Approve a draft insight above to publish one.</div>';
     return;
   }
   document.getElementById('products').innerHTML = state.products.map(p => `
@@ -299,10 +580,8 @@ function pushEvent(ev){
     <span class="agent">← ${ev.agent}</span>
     <div class="pl">${payload}</div>`;
   stream.prepend(div);
-  // cap at 200 entries
   while (stream.childNodes.length > 200) stream.removeChild(stream.lastChild);
 
-  // animate the corresponding stage if applicable
   const stageMap = {
     'signal.created':   'signal',
     'signal.enriched':  'enriched',
@@ -370,7 +649,6 @@ async function openProduct(pid){
 
 function closeModal(){ document.getElementById('modal').classList.remove('open'); }
 
-// websocket for live events
 function connect(){
   const ws = new WebSocket(`ws://${location.host}/ws`);
   ws.onopen = () => {
@@ -381,7 +659,6 @@ function connect(){
     const msg = JSON.parse(m.data);
     if (msg.type === 'event') {
       pushEvent(msg.data);
-      // refresh aggregates after a small delay so we don't thrash
       clearTimeout(window._rt);
       window._rt = setTimeout(refresh, 250);
     }
