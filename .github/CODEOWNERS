@@ -1,0 +1,9 @@
+# Default reviewer for all PRs.
+# More info: https://docs.github.com/articles/about-code-owners
+
+*       @kisko
+
+# Per-area owners can be added as the project grows, e.g.:
+# /tier0/   @kisko
+# /tier1/   @kisko
+# /docs/    @kisko
