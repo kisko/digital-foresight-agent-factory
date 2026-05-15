@@ -1,0 +1,82 @@
+# Source registry — used by B1 (ingestion) and A1 (policy: allow-list).
+# In production this lives in a DB; here it's a small YAML for the prototype.
+
+allow_domains:
+  - arxiv.org
+  - openai.com
+  - anthropic.com
+  - microsoft.com
+  - google.com
+  - nvidia.com
+  - eur-lex.europa.eu
+  - nist.gov
+  - iso.org
+  - reuters.com
+  - techcrunch.com
+  - theverge.com
+  - bleepingcomputer.com
+  - github.blog
+
+# Keywords that define "relevant to The Company". Used by B3 to score signals.
+company_lens:
+  - artificial intelligence
+  - generative ai
+  - foundation model
+  - agentic
+  - agent
+  - llm
+  - rag
+  - mlops
+  - data mesh
+  - lakehouse
+  - eu ai act
+  - cybersecurity
+  - cve
+  - kubernetes
+  - sovereign cloud
+  - sustainability
+  - hydrogen
+  - carbon capture
+  - digital twin
+
+# Taxonomy → routing tags (audience / persona / pod)
+persona_map:
+  "ai/foundation-models":
+    - exec-brief
+    - pod:digital_ai
+    - audience:cto-office
+  "ai/agents":
+    - pod:digital_ai
+    - audience:platform-team
+  "ai/governance":
+    - exec-brief
+    - audience:legal
+    - audience:compliance
+  "data/architecture":
+    - pod:digital_ai
+    - audience:data-platform
+  "security/incident":
+    - urgent
+    - audience:ciso
+  "regulation":
+    - exec-brief
+    - audience:legal
+  "research/paper":
+    - pod:digital_ai
+    - audience:research
+  "funding/m&a":
+    - audience:strategy
+  "release":
+    - audience:engineering
+  "patent":
+    - audience:ip-team
+
+# Example feeds (not used by the prototype B1, but documented for when
+# you add a live RSS/API fetcher).
+feeds:
+  - { url: "https://export.arxiv.org/rss/cs.AI",                   cadence_min: 60, type: "rss" }
+  - { url: "https://openai.com/blog/rss.xml",                      cadence_min: 60, type: "rss" }
+  - { url: "https://www.anthropic.com/news/rss.xml",               cadence_min: 60, type: "rss" }
+  - { url: "https://blogs.microsoft.com/feed/",                    cadence_min: 60, type: "rss" }
+  - { url: "https://www.bleepingcomputer.com/feed/",               cadence_min: 30, type: "rss" }
+  - { url: "https://eur-lex.europa.eu/EN/legal-content/latest.xml", cadence_min: 240, type: "rss" }

@@ -1,0 +1,110 @@
+[
+  {
+    "title": "OpenAI announces GPT-5 general availability with native agent runtime",
+    "body": "OpenAI today announced general availability of GPT-5, including a native agent runtime that exposes tool use, persistent threads, and a built-in evaluations harness. The release targets enterprise customers and includes data residency commitments. Pricing introduces a per-million-token tier for foundation model usage.",
+    "source": "openai.com",
+    "url": "https://openai.com/blog/gpt-5-ga"
+  },
+  {
+    "title": "Anthropic releases Claude 4.6 with extended 1M-token context window",
+    "body": "Anthropic released Claude 4.6 today, doubling the context window to 1 million tokens and improving agent tool use. The new model targets coding workloads and includes a managed agent SDK. Independent benchmarks show notable gains on long-context retrieval tasks.",
+    "source": "anthropic.com",
+    "url": "https://anthropic.com/news/claude-4-6"
+  },
+  {
+    "title": "EU AI Act phase 2 enforcement begins for high-risk systems",
+    "body": "The European Commission confirmed today that phase 2 of the EU AI Act enforcement is now active for high-risk systems, including those used in critical infrastructure and employment. Companies have 18 months to demonstrate conformity assessment. The directive introduces new documentation requirements for foundation model providers.",
+    "source": "eur-lex.europa.eu",
+    "url": "https://eur-lex.europa.eu/ai-act-phase-2"
+  },
+  {
+    "title": "Microsoft Foundry Agent Service adds Service Bus and Cosmos DB integrations",
+    "body": "Microsoft announced general availability of new connectors in Foundry Agent Service, including native Azure Service Bus event triggers and Cosmos DB state persistence. The release simplifies building agentic architectures on Azure. Pricing is bundled with existing AI Foundry consumption.",
+    "source": "microsoft.com",
+    "url": "https://microsoft.com/blog/foundry-agent-update"
+  },
+  {
+    "title": "NIST publishes draft AI risk management framework profile for agentic systems",
+    "body": "NIST released a draft profile of the AI Risk Management Framework specifically addressing agentic systems. The profile covers autonomous tool use, multi-agent coordination, and human oversight controls. Public comment is open for 60 days.",
+    "source": "nist.gov",
+    "url": "https://nist.gov/airmf/agentic-profile-draft"
+  },
+  {
+    "title": "Arxiv: Self-consistency improves agent tool use across long horizons",
+    "body": "A new arxiv preprint demonstrates that self-consistency sampling improves agent tool use accuracy by 18% on the AgentBench long-horizon suite. Authors from Stanford and DeepMind propose a simple modification to the ReAct loop. Code and weights are released under MIT license.",
+    "source": "arxiv.org",
+    "url": "https://arxiv.org/abs/2026.04321"
+  },
+  {
+    "title": "Major cloud provider reports critical CVE in managed Kubernetes service",
+    "body": "A major cloud provider disclosed a critical CVE affecting its managed Kubernetes service that could allow tenant escape under specific configurations. Patches have been rolled out and customers are urged to verify cluster versions immediately. No exploitation has been confirmed in the wild.",
+    "source": "bleepingcomputer.com",
+    "url": "https://bleepingcomputer.com/news/critical-k8s-cve-2026"
+  },
+  {
+    "title": "AI agent startup Cognition raises $500M Series C at $5B valuation",
+    "body": "Cognition, the company behind the Devin AI software engineer, raised a $500M Series C round led by Sequoia at a $5 billion valuation. The funds will go to expanding the agent platform and enterprise sales. The round comes amid growing M&A activity in the agentic AI space.",
+    "source": "techcrunch.com",
+    "url": "https://techcrunch.com/cognition-series-c"
+  },
+  {
+    "title": "Databricks announces unified lakehouse + agent runtime",
+    "body": "Databricks announced a unified runtime that combines its lakehouse platform with managed agent execution, allowing agents to query Delta tables and Iceberg with governance controls inherited from Unity Catalog. The release targets enterprise customers building agentic data products.",
+    "source": "techcrunch.com",
+    "url": "https://techcrunch.com/databricks-agent-runtime"
+  },
+  {
+    "title": "Google DeepMind paper on long-context retrieval beats RAG baselines",
+    "body": "A Google DeepMind preprint shows that combining long-context inference with selective retrieval beats vanilla RAG baselines by 12 points on enterprise QA benchmarks. The approach uses a learned retrieval gate that decides per-query whether to fetch documents.",
+    "source": "arxiv.org",
+    "url": "https://arxiv.org/abs/2026.05012"
+  },
+  {
+    "title": "Bug bounty researcher discloses prompt-injection vulnerability in major agent platform",
+    "body": "A security researcher disclosed a prompt-injection vulnerability in a major agent platform that could allow data exfiltration via crafted email content processed by agent inboxes. The vendor has issued a patch and recommends customers enable the new isolation mode.",
+    "source": "bleepingcomputer.com",
+    "url": "https://bleepingcomputer.com/news/agent-prompt-injection-disclosure"
+  },
+  {
+    "title": "ISO/IEC 42001 certification adoption accelerates among hyperscalers",
+    "body": "Three major hyperscalers announced ISO/IEC 42001 AI management system certification this quarter, signaling growing enterprise demand for verifiable AI governance. The standard covers risk assessment, lifecycle management, and post-deployment monitoring.",
+    "source": "iso.org",
+    "url": "https://iso.org/news/42001-adoption"
+  },
+  {
+    "title": "Patent filing surge in agentic AI: USPTO data shows 3x year-over-year increase",
+    "body": "Analysis of USPTO filings shows a 3x increase year-over-year in patent applications mentioning 'agentic AI' or 'multi-agent system'. Top assignees include Microsoft, Google, IBM, and several startups. The trend points to consolidating IP positions around agent orchestration patterns.",
+    "source": "reuters.com",
+    "url": "https://reuters.com/legal/usp-agentic-patents"
+  },
+  {
+    "title": "OpenTelemetry agent instrumentation hits 1.0 milestone",
+    "body": "The OpenTelemetry project announced a stable 1.0 release of its agent instrumentation specification, enabling consistent observability for LLM applications across vendors. The spec covers spans for tool calls, model invocations, and agent runs.",
+    "source": "github.blog",
+    "url": "https://github.blog/opentelemetry-agents-1-0"
+  },
+  {
+    "title": "Major incident: agent-driven trading system causes flash crash on European exchange",
+    "body": "An autonomous agent-driven trading system caused a brief flash crash on a major European exchange yesterday. The exchange has paused agent-mediated trading pending review. Regulators have signaled that incident reports under DORA will be required.",
+    "source": "reuters.com",
+    "url": "https://reuters.com/markets/agent-flash-crash"
+  },
+  {
+    "title": "Nvidia announces Blackwell Ultra GPUs with native agent inference acceleration",
+    "body": "Nvidia unveiled Blackwell Ultra GPUs at GTC, featuring dedicated tensor cores optimized for agent inference workloads. Benchmarks show 2.5x throughput improvement on multi-agent reasoning tasks compared to the previous generation. Availability is expected Q3.",
+    "source": "nvidia.com",
+    "url": "https://nvidia.com/blackwell-ultra-launch"
+  },
+  {
+    "title": "Microsoft Fabric announces agentic data mesh capabilities at Build",
+    "body": "Microsoft announced at Build that Fabric will gain agentic data mesh capabilities, allowing autonomous agents to discover, query, and join data products with governance enforcement. The capability integrates with Purview classification and lineage.",
+    "source": "microsoft.com",
+    "url": "https://microsoft.com/build/fabric-agentic-mesh"
+  },
+  {
+    "title": "Cybersecurity firm reports surge in AI-generated phishing campaigns",
+    "body": "A cybersecurity firm released a report showing a 4x increase in AI-generated phishing campaigns over the past quarter. Attacks increasingly use voice cloning and personalized content. Defenders are urged to update awareness training and deploy AI-aware email gateways.",
+    "source": "bleepingcomputer.com",
+    "url": "https://bleepingcomputer.com/news/ai-phishing-surge"
+  }
+]

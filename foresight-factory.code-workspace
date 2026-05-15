@@ -1,0 +1,36 @@
+{
+  "folders": [
+    { "name": "🏭 foresight-factory", "path": "." },
+    { "name": "📡 shared",   "path": "shared" },
+    { "name": "🎛  tier0 — control plane", "path": "tier0" },
+    { "name": "⚙️  tier1 — production line", "path": "tier1" },
+    { "name": "🔬 tier2 — upgrades", "path": "tier2" },
+    { "name": "🧩 pods",     "path": "pods" },
+    { "name": "🌐 api",      "path": "api" },
+    { "name": "📊 dashboard", "path": "dashboard" }
+  ],
+  "settings": {
+    "python.defaultInterpreterPath": "${workspaceFolder:🏭 foresight-factory}/.venv/bin/python",
+    "python.analysis.extraPaths": ["${workspaceFolder:🏭 foresight-factory}"],
+    "python.testing.pytestEnabled": true,
+    "python.testing.pytestArgs": ["tests"],
+    "files.exclude": {
+      "**/__pycache__": true,
+      "**/.pytest_cache": true
+    },
+    "editor.formatOnSave": false,
+    "[python]": {
+      "editor.tabSize": 4,
+      "editor.insertSpaces": true
+    }
+  },
+  "extensions": {
+    "recommendations": [
+      "ms-python.python",
+      "ms-python.vscode-pylance",
+      "ms-toolsai.jupyter",
+      "ms-azuretools.vscode-azurefunctions",
+      "ms-azuretools.vscode-azurecontainerapps"
+    ]
+  }
+}

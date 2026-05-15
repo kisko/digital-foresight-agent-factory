@@ -1,0 +1,1109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>The Company — Digital Foresight Agent Factory</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css" id="theme">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js-menu@2.1.0/menu.css">
+
+  <style>
+    :root {
+      --accent: #ff7e3a;
+      --accent2: #38c1ff;
+      --tier0: #ff7e3a;
+      --tier1: #38c1ff;
+      --tier2: #b388ff;
+      --tier3: #66e7a4;
+      --muted: #8aa0b4;
+    }
+    .reveal { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+    .reveal h1, .reveal h2, .reveal h3, .reveal h4 { font-weight: 600; text-transform: none; letter-spacing: -0.01em; }
+    .reveal h1 { font-size: 2.4em; }
+    .reveal h2 { font-size: 1.7em; }
+    .reveal h3 { font-size: 1.3em; color: var(--accent); }
+    .reveal h4 { font-size: 1.05em; color: var(--accent2); margin-top: 0.6em; }
+    .reveal section { text-align: left; }
+    .reveal .center { text-align: center; }
+    .reveal .muted { color: var(--muted); font-size: 0.85em; }
+    .reveal ul, .reveal ol { display: block; margin-left: 1em; }
+    .reveal li { margin-bottom: 0.25em; }
+
+    .badge {
+      display: inline-block; padding: 0.15em 0.6em; border-radius: 999px;
+      font-size: 0.55em; font-weight: 600; vertical-align: middle;
+      margin-left: 0.5em; letter-spacing: 0.05em;
+    }
+    .badge.t0 { background: var(--tier0); color: #1a1a1a; }
+    .badge.t1 { background: var(--tier1); color: #1a1a1a; }
+    .badge.t2 { background: var(--tier2); color: #1a1a1a; }
+    .badge.t3 { background: var(--tier3); color: #1a1a1a; }
+
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5em; }
+    .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1em; }
+    .grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.8em; }
+    .grid5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.6em; }
+
+    .card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 0.8em 1em;
+      font-size: 0.78em;
+    }
+    .card.tier0 { border-left: 4px solid var(--tier0); }
+    .card.tier1 { border-left: 4px solid var(--tier1); }
+    .card.tier2 { border-left: 4px solid var(--tier2); }
+    .card.tier3 { border-left: 4px solid var(--tier3); }
+    .card h4 { margin-top: 0; margin-bottom: 0.3em; }
+    .card ul { font-size: 0.95em; margin-left: 1em; }
+
+    .pill {
+      display: inline-block;
+      padding: 0.2em 0.6em;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.08);
+      font-size: 0.75em;
+      margin: 0.15em 0.25em 0.15em 0;
+      font-family: "SF Mono", Menlo, monospace;
+    }
+    .pill.event { background: rgba(56,193,255,0.15); color: var(--accent2); }
+    .pill.api { background: rgba(255,126,58,0.15); color: var(--accent); }
+
+    .flow {
+      display: flex; align-items: center; justify-content: space-between;
+      margin: 1em 0; gap: 0.4em;
+    }
+    .flow .step {
+      flex: 1; padding: 0.6em 0.4em; text-align: center;
+      background: rgba(255,255,255,0.05); border-radius: 8px;
+      border-top: 3px solid var(--accent2);
+      font-size: 0.8em;
+    }
+    .flow .arrow { color: var(--accent); font-size: 1.4em; }
+
+    .crit { font-size: 0.75em; color: var(--muted); }
+    .crit b { color: #fff; }
+    .crit ul { margin-left: 1.2em; }
+    .crit li::marker { color: var(--accent); }
+
+    table.compact { font-size: 0.7em; border-collapse: collapse; width: 100%; }
+    table.compact th, table.compact td { padding: 0.4em 0.6em; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: left; vertical-align: top; }
+    table.compact th { color: var(--accent2); font-weight: 600; }
+    table.compact code { font-size: 0.9em; }
+
+    .agent-title { display: flex; align-items: baseline; gap: 0.6em; margin-bottom: 0.2em; }
+    .agent-code {
+      font-family: "SF Mono", Menlo, monospace;
+      background: rgba(255,255,255,0.08);
+      padding: 0.1em 0.5em; border-radius: 6px;
+      font-size: 0.7em; color: var(--accent);
+    }
+
+    .cover {
+      background: radial-gradient(circle at 30% 30%, rgba(255,126,58,0.15), transparent 50%),
+                  radial-gradient(circle at 70% 70%, rgba(56,193,255,0.15), transparent 50%);
+      padding: 2em;
+      border-radius: 16px;
+    }
+    .cover h1 { font-size: 2.6em; margin-bottom: 0.3em; }
+    .cover .subtitle { color: var(--accent); font-size: 1.1em; margin-bottom: 1.5em; }
+    .cover .meta { color: var(--muted); font-size: 0.7em; }
+
+    .arch-stack { display: flex; flex-direction: column; gap: 0.4em; margin: 1em 0; }
+    .arch-layer {
+      padding: 0.7em 1em; border-radius: 8px;
+      background: linear-gradient(90deg, rgba(255,126,58,0.15), rgba(56,193,255,0.15));
+      border-left: 4px solid var(--accent);
+      font-size: 0.85em;
+    }
+    .arch-layer b { color: var(--accent); }
+
+    .micro {
+      background: rgba(102,231,164,0.08);
+      border: 1px solid rgba(102,231,164,0.2);
+      border-radius: 8px;
+      padding: 0.5em 0.7em;
+      font-size: 0.7em;
+    }
+    .micro b { color: var(--tier3); display: block; margin-bottom: 0.2em; }
+
+    /* Azure section */
+    :root { --azure: #0078d4; --azure2: #50e6ff; }
+    .azbox {
+      background: rgba(0,120,212,0.10);
+      border: 1px solid rgba(80,230,255,0.25);
+      border-radius: 8px;
+      padding: 0.45em 0.6em;
+      font-size: 0.68em;
+      line-height: 1.35;
+    }
+    .azbox b { color: var(--azure2); display: block; font-size: 0.95em; margin-bottom: 0.15em; }
+    .azbox .svc { color: #fff; font-weight: 600; }
+    .azlane {
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      align-items: stretch;
+      gap: 0.5em;
+      margin-bottom: 0.5em;
+    }
+    .azlane .lbl {
+      background: linear-gradient(180deg, rgba(0,120,212,0.35), rgba(0,120,212,0.15));
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75em; font-weight: 600;
+      color: #fff; text-align: center;
+      padding: 0.4em;
+    }
+    .azlane .cells { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.4em; }
+    .azlane .cells.three { grid-template-columns: repeat(3, 1fr); }
+    .azlane .cells.two { grid-template-columns: repeat(2, 1fr); }
+    .azlane .cells.one { grid-template-columns: 1fr; }
+    .badge.az { background: var(--azure); color: #fff; }
+
+    .small-list li { font-size: 0.78em; }
+    .reveal pre { font-size: 0.5em; box-shadow: none; }
+    .reveal code { font-family: "SF Mono", Menlo, monospace; }
+
+    .keyhint {
+      position: fixed; bottom: 10px; right: 20px;
+      font-size: 11px; color: var(--muted); z-index: 30;
+      font-family: "SF Mono", Menlo, monospace;
+    }
+    .keyhint kbd {
+      background: rgba(255,255,255,0.1); padding: 1px 5px;
+      border-radius: 3px; margin: 0 2px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="keyhint">
+  <kbd>←→</kbd> tiers · <kbd>↑↓</kbd> agents · <kbd>O</kbd> overview · <kbd>M</kbd> menu · <kbd>F</kbd> fullscreen · <kbd>S</kbd> notes
+</div>
+
+<div class="reveal">
+  <div class="slides">
+
+    <section data-menu-title="Cover">
+      <div class="cover center">
+        <h1>Digital Foresight<br><span style="color:var(--accent2)">Agent Factory</span></h1>
+        <div class="subtitle">Architecture &amp; Agent Catalog for &ldquo;The Company&rdquo;</div>
+        <p class="muted">A scalable multi-agent system that turns signals into publishable insights —<br>built for high information velocity, with traceability and governance.</p>
+        <div class="meta">Version 1.0 · May 2026</div>
+      </div>
+      <aside class="notes">
+        Opening frame: we're proposing an agent factory, not a single agent. Three things to remember:
+        (1) hierarchical control plane + scalable pods, (2) every output is traceable to evidence,
+        (3) human approval gates before anything customer-facing ships.
+      </aside>
+    </section>
+
+    <section data-menu-title="Purpose &amp; Outcomes">
+      <h2>Purpose &amp; outcomes</h2>
+      <div class="grid2" style="margin-top:1em">
+        <div class="card">
+          <h4>What we're building</h4>
+          <ul>
+            <li>Scalable multi-agent architecture for digital foresight</li>
+            <li>Customer-facing outputs for &ldquo;The Company&rdquo;</li>
+            <li>Designed for high information velocity</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>What it must deliver</h4>
+          <ul>
+            <li>Traceability &amp; governance by default</li>
+            <li>Signals → publishable insights &amp; products</li>
+            <li>Reusable capabilities + thin domain agents</li>
+          </ul>
+        </div>
+      </div>
+      <p class="center muted" style="margin-top:1.5em">Scale path: a handful of agents today → ~100 agents across 12 domains.</p>
+      <aside class="notes">
+        The "why" is volume + velocity + trust. Today an analyst can read maybe 50 signals/week well.
+        We need to scan thousands and surface the 5–10 that matter — without hallucinating or losing the provenance trail.
+      </aside>
+    </section>
+
+    <section data-menu-title="Operating Model">
+      <section>
+        <h2>Operating model</h2>
+        <p class="muted">Hierarchical control + swarms of reusable agents.</p>
+        <div class="grid4" style="margin-top:1em">
+          <div class="card tier0">
+            <h4>Tier 0 <span class="badge t0">Control</span></h4>
+            <p class="crit">Small, stable Control Plane. Orchestration, policy, evals, knowledge store.</p>
+          </div>
+          <div class="card tier1">
+            <h4>Tier 1 <span class="badge t1">Core</span></h4>
+            <p class="crit">Core Production Line. Ingest → enrich → score → cluster → draft → publish.</p>
+          </div>
+          <div class="card tier2">
+            <h4>Tier 2 <span class="badge t2">Upgrade</span></h4>
+            <p class="crit">Optional Intelligence Upgrades. Credibility, red team, trajectory, scenarios, impact.</p>
+          </div>
+          <div class="card tier3">
+            <h4>Tier 3 <span class="badge t3">Pods</span></h4>
+            <p class="crit">Domain Pods scale to ~100 agents. Reusable capabilities + thin micro-agents.</p>
+          </div>
+        </div>
+        <p class="center muted" style="margin-top:1.5em">↓ press <kbd>↓</kbd> for the scaling principle</p>
+      </section>
+      <section>
+        <h3>Why hierarchical + swarms</h3>
+        <ul>
+          <li><b>Stability where it matters</b> — Tier 0 is small and changes rarely. Trust comes from here.</li>
+          <li><b>Speed where it matters</b> — Tier 1 is a pipeline; each stage owns one thing.</li>
+          <li><b>Depth on demand</b> — Tier 2 upgrades fire only when a signal justifies them.</li>
+          <li><b>Reuse over duplication</b> — Tier 3 pods compose Tier 0–2 agents instead of cloning them.</li>
+        </ul>
+        <p class="muted" style="margin-top:1em">Result: scale from ~10 agents to ~100 without 10× the maintenance.</p>
+      </section>
+    </section>
+
+    <section data-menu-title="Architecture">
+      <section>
+        <h2>Architecture — five logical layers</h2>
+        <div class="arch-stack">
+          <div class="arch-layer"><b>1. Sense</b> — ingest and normalize signals from trusted sources</div>
+          <div class="arch-layer"><b>2. Make sense</b> — enrich, score, deduplicate and cluster signals</div>
+          <div class="arch-layer"><b>3. Interpret</b> — draft insights with evidence, confidence and actions</div>
+          <div class="arch-layer"><b>4. Package</b> — publish briefs, dashboards, 1-pagers (with approval gates)</div>
+          <div class="arch-layer"><b>5. Learn</b> — continuous evaluation, drift detection, feedback loops</div>
+        </div>
+        <p class="center muted">Event-driven backbone · shared Knowledge Store (raw + structured + vectors + optional graph)</p>
+      </section>
+      <section>
+        <h3>The pipeline, end to end</h3>
+        <div class="flow">
+          <div class="step">Signal<br>created</div>
+          <div class="arrow">→</div>
+          <div class="step">Enriched</div>
+          <div class="arrow">→</div>
+          <div class="step">Scored</div>
+          <div class="arrow">→</div>
+          <div class="step">Clustered</div>
+          <div class="arrow">→</div>
+          <div class="step">Insight</div>
+          <div class="arrow">→</div>
+          <div class="step">Approved</div>
+          <div class="arrow">→</div>
+          <div class="step">Published</div>
+        </div>
+        <p class="muted center" style="margin-top:1em">Every transition emits an event. Every event is auditable. Every published item carries trace metadata back to source.</p>
+      </section>
+    </section>
+
+    <section data-menu-title="Agent Contract">
+      <h2>Standard agent contract</h2>
+      <p class="muted">Every agent — across all tiers — implements the same contract. This is what makes composition safe.</p>
+      <div class="grid2" style="margin-top:1em">
+        <div class="card">
+          <h4>Triggers</h4>
+          <p class="crit">Events (<code>signal.created</code>, <code>cluster.updated</code>…) or scheduled runs.</p>
+          <h4>Inputs</h4>
+          <p class="crit">Object reference, policy pack, &ldquo;The Company&rdquo; context pack, tool permissions.</p>
+        </div>
+        <div class="card">
+          <h4>Outputs</h4>
+          <p class="crit">Structured JSON + human notes. Claims mapped to evidence. Trace metadata (agent name + version).</p>
+          <h4>Non-functional</h4>
+          <p class="crit">Idempotent · audit logs · draft/approved separation · cost &amp; latency budgets.</p>
+        </div>
+      </div>
+      <p class="center" style="margin-top:1em; font-size:0.9em"><span class="pill">Composable</span> <span class="pill">Auditable</span> <span class="pill">Bounded</span> <span class="pill">Replayable</span></p>
+      <aside class="notes">
+        Idempotency is the killer feature. It means we can replay any event safely without duplicating
+        objects or outputs. Without it, retry storms become production incidents.
+      </aside>
+    </section>
+
+    <section data-menu-title="Events &amp; API">
+      <section>
+        <h2>Canonical events</h2>
+        <p class="muted">The bus is the integration contract. New agents subscribe; they don't call each other.</p>
+        <div style="margin-top:1em; line-height:2.2">
+          <span class="pill event">signal.created</span>
+          <span class="pill event">signal.enriched</span>
+          <span class="pill event">signal.scored</span>
+          <span class="pill event">cluster.updated</span>
+          <span class="pill event">insight.created</span>
+          <span class="pill event">insight.reviewed</span>
+          <span class="pill event">insight.approved</span>
+          <span class="pill event">product.published</span>
+          <span class="pill event">agent.error</span>
+          <span class="pill event">eval.report.created</span>
+        </div>
+        <p class="center muted" style="margin-top:2em">↓ REST API surface</p>
+      </section>
+      <section>
+        <h3>REST API — surface</h3>
+        <table class="compact">
+          <thead><tr><th>Resource</th><th>Endpoints</th></tr></thead>
+          <tbody>
+            <tr><td><b>Signals</b></td><td>
+              <span class="pill api">POST /signals</span>
+              <span class="pill api">GET /signals/{id}</span>
+              <span class="pill api">PATCH /signals/{id}</span>
+              <span class="pill api">GET /signals?from=&amp;to=&amp;theme=&amp;min_relevance=</span>
+            </td></tr>
+            <tr><td><b>Clusters</b></td><td>
+              <span class="pill api">POST /clusters/recompute?window=</span>
+              <span class="pill api">GET /clusters/{id}</span>
+              <span class="pill api">GET /clusters?window=&amp;min_burst=</span>
+            </td></tr>
+            <tr><td><b>Insights</b></td><td>
+              <span class="pill api">POST /insights</span>
+              <span class="pill api">GET /insights/{id}</span>
+              <span class="pill api">PATCH /insights/{id}</span>
+              <span class="pill api">POST /insights/{id}/approve</span>
+              <span class="pill api">GET /insights?status=approved&amp;theme=</span>
+            </td></tr>
+            <tr><td><b>Products</b></td><td>
+              <span class="pill api">POST /products/weekly-brief?week=YYYY-WW</span>
+              <span class="pill api">GET /products/{id}</span>
+            </td></tr>
+            <tr><td><b>Orchestrator</b></td><td>
+              <span class="pill api">POST /agent-runs</span>
+              <span class="pill api">GET /agent-runs/{id}</span>
+              <span class="pill api">POST /agent-runs/{id}/cancel</span>
+            </td></tr>
+          </tbody>
+        </table>
+      </section>
+    </section>
+
+    <section data-menu-title="Tier 0 — Control Plane">
+      <section>
+        <h2>Tier 0 — Control Plane <span class="badge t0">Control</span></h2>
+        <p class="muted">Small, stable, trusted. Four agents that govern the whole factory.</p>
+        <div class="grid4" style="margin-top:1.5em">
+          <div class="card tier0"><h4>A0 — Orchestrator</h4><p class="crit">Routes work, enforces SLAs, runs the state machine.</p></div>
+          <div class="card tier0"><h4>A1 — Policy &amp; Compliance</h4><p class="crit">Governance, classification, citation-first, publish gate.</p></div>
+          <div class="card tier0"><h4>A2 — Quality &amp; Evals</h4><p class="crit">Test sets, drift detection, regression-gated promotion.</p></div>
+          <div class="card tier0"><h4>A3 — Knowledge Librarian</h4><p class="crit">Storage, embeddings, retrieval packs, provenance.</p></div>
+        </div>
+        <p class="center muted" style="margin-top:1.5em">↓ drill into each agent</p>
+      </section>
+
+      <section>
+        <div class="agent-title"><span class="agent-code">A0</span><h3>Orchestrator / Workflow Director</h3></div>
+        <p class="muted">Runs the end-to-end pipeline, routes work to pods/agents, enforces SLAs and review gates.</p>
+        <div class="grid2" style="margin-top:0.5em">
+          <div>
+            <h4>What it does</h4>
+            <ul class="small-list">
+              <li>Advances objects through workflow states</li>
+              <li>Routes by taxonomy, relevance &amp; audience</li>
+              <li>Allocates compute budget; invokes specialists only when needed</li>
+              <li>Enforces human-in-the-loop approval gates</li>
+              <li>Retries, dead-letter queues, run observability</li>
+            </ul>
+          </div>
+          <div>
+            <h4>I/O</h4>
+            <p class="crit"><b>In:</b> workflow defs, agent registry, policy pack, taxonomy, SLA rules</p>
+            <p class="crit"><b>Out:</b> <span class="pill event">agent-run.created</span> <span class="pill event">agent-run.completed</span> <span class="pill event">agent.error</span> <span class="pill event">workflow.audit</span></p>
+            <div class="crit">
+              <b>Acceptance:</b>
+              <ul>
+                <li>≥99% workflows complete without manual intervention</li>
+                <li>Idempotent retries (no duplicate objects/products)</li>
+                <li>Every published item has full agent-version + evidence trace</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="agent-title"><span class="agent-code">A1</span><h3>Policy &amp; Compliance Gatekeeper</h3></div>
+        <p class="muted">Governance, data classification, IP/copyright-safe publishing.</p>
+        <div class="grid2" style="margin-top:0.5em">
+          <div>
+            <h4>What it does</h4>
+            <ul class="small-list">
+              <li>Validates sources against allow/deny lists + licensing</li>
+              <li>Applies classification: public / internal / restricted</li>
+              <li>Blocks copyrighted text beyond allowed limits; enforces citation-first</li>
+              <li>Flags sensitive info; suggests redactions</li>
+              <li>Hard gate: only approved insights ship</li>
+            </ul>
+          </div>
+          <div>
+            <h4>I/O</h4>
+            <p class="crit"><b>In:</b> policy pack, source registry, classification rules, templates</p>
+            <p class="crit"><b>Out:</b> <span class="pill event">policy.pass</span> <span class="pill event">policy.block</span> <span class="pill event">redaction.suggested</span></p>
+            <div class="crit">
+              <b>Acceptance:</b>
+              <ul>
+                <li>0 policy violations in published products during pilot</li>
+                <li>100% of published insights carry citations + provenance</li>
+                <li>All blocks include reason + remediation</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="agent-title"><span class="agent-code">A2</span><h3>Quality &amp; Evaluation (Evals) Agent</h3></div>
+        <p class="muted">Measures quality, usefulness, drift and regression for every agent/version.</p>
+        <div class="grid2" style="margin-top:0.5em">
+          <div>
+            <h4>What it does</h4>
+            <ul class="small-list">
+              <li>Maintains labeled test sets (relevance, clustering, usefulness)</li>
+              <li>Runs scheduled evals; gates promotion of new versions</li>
+              <li>Detects input drift (source mix, topic shifts) and output drift</li>
+              <li>Weekly dashboard: precision/recall, novelty, latency, cost/insight</li>
+            </ul>
+          </div>
+          <div>
+            <h4>I/O</h4>
+            <p class="crit"><b>In:</b> eval datasets, feedback signals, version registry, thresholds</p>
+            <p class="crit"><b>Out:</b> <span class="pill event">eval.report.created</span> <span class="pill event">eval.regression.alert</span></p>
+            <div class="crit">
+              <b>Acceptance:</b>
+              <ul>
+                <li>Weekly eval report generated automatically</li>
+                <li>Agent updates blocked if regression &gt; thresholds</li>
+                <li>Metrics visible to owners and stakeholders</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="agent-title"><span class="agent-code">A3</span><h3>Knowledge Store Librarian</h3></div>
+        <p class="muted">Storage, indexing, retrieval bundles, provenance across the knowledge base.</p>
+        <div class="grid2" style="margin-top:0.5em">
+          <div>
+            <h4>What it does</h4>
+            <ul class="small-list">
+              <li>Stores immutable raw artifacts with hashes</li>
+              <li>Generates embeddings; maintains vector index</li>
+              <li>Maintains entity index + optional knowledge graph</li>
+              <li>Provides retrieval packs (top-k, similar, domain context)</li>
+            </ul>
+          </div>
+          <div>
+            <h4>I/O</h4>
+            <p class="crit"><b>In:</b> blob store, DB, vector store, schema versions, retention rules</p>
+            <p class="crit"><b>Out:</b> <span class="pill event">retrieval.pack.created</span> <span class="pill event">index.updated</span></p>
+            <div class="crit">
+              <b>Acceptance:</b>
+              <ul>
+                <li>100% signals reference retrievable raw artifacts</li>
+                <li>Top-k retrieval latency within SLA</li>
+                <li>Provenance consistent and queryable</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section data-menu-title="Tier 1 — Core Production">
+      <section>
+        <h2>Tier 1 — Core Production Line <span class="badge t1">Core</span></h2>
+        <p class="muted">Six agents form the pipeline. Each stage owns one job and emits one event.</p>
+        <div class="flow" style="margin-top:1.5em; flex-wrap:wrap">
+          <div class="step" style="border-top-color:var(--tier1)"><b>B1</b><br>Ingestion</div>
+          <div class="arrow">→</div>
+          <div class="step" style="border-top-color:var(--tier1)"><b>B2</b><br>Normalize<br>&amp; Enrich</div>
+          <div class="arrow">→</div>
+          <div class="step" style="border-top-color:var(--tier1)"><b>B3</b><br>Relevance<br>&amp; Routing</div>
+          <div class="arrow">→</div>
+          <div class="step" style="border-top-color:var(--tier1)"><b>B4</b><br>Dedup<br>&amp; Cluster</div>
+          <div class="arrow">→</div>
+          <div class="step" style="border-top-color:var(--tier1)"><b>B5</b><br>Insight<br>Drafting</div>
+          <div class="arrow">→</div>
+          <div class="step" style="border-top-color:var(--tier1)"><b>B6</b><br>Publish<br>&amp; Distribute</div>
+        </div>
+        <p class="center muted" style="margin-top:1.5em">↓ drill into each stage</p>
+      </section>
+
+      <section>
+        <div class="agent-title"><span class="agent-code">B1</span><h3>Ingestion Coordinator</h3></div>
+        <p class="muted">Collects signals from external + allowed internal sources with robust coverage reporting.</p>
+        <div class="grid2">
+          <div>
+            <h4>What it does</h4>
+            <ul class="small-list">
+              <li>Source registry: RSS, APIs, web, newsletters, standards bodies, patents</li>
+              <li>Fetches content, extracts main text, stores raw artifact + Signal header</li>
+              <li>Initial source reputation + domain hints + retrieval metadata</li>
+              <li>Emits daily source health report</li>
+            </ul>
+          </div>
+          <div>
+            <h4>I/O</h4>
+            <p class="crit"><b>In:</b> source registry, cadence schedule, parsing rules, secrets</p>
+            <p class="crit"><b>Out:</b> <span class="pill event">signal.created</span> <span class="pill event">sources.health.report</span></p>
+            <div class="crit"><b>Acceptance:</b>
+              <ul>
+                <li>≥95% successful fetch cycles</li>
+                <li>Duplicate raw fetch &lt;5% (hash-based)</li>
+                <li>Daily coverage report (alive/dead sources)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="agent-title"><span class="agent-code">B2</span><h3>Normalization &amp; Enrichment</h3></div>
+        <p class="muted">Cleans and enriches signals with standardized summaries, entities, taxonomy and type.</p>
+        <div class="grid2">
+          <div>
+            <h4>What it does</h4>
+            <ul class="small-list">
+              <li>Boilerplate removal &amp; text cleaning</li>
+              <li>Language detection + optional translation (preserve original)</li>
+              <li>Extract entities (ORG/TECH/GEO/PERSON) + key phrases</li>
+              <li>Generate short abstract + key takeaways</li>
+              <li>Taxonomy + signal type (regulation, research, incident, funding, release…)</li>
+            </ul>
+          </div>
+          <div>
+            <h4>I/O</h4>
+            <p class="crit"><b>In:</b> <span class="pill event">signal.created</span>, taxonomy, domain dictionaries</p>
+            <p class="crit"><b>Out:</b> <span class="pill event">signal.enriched</span></p>
+            <div class="crit"><b>Acceptance:</b>
+              <ul>
+                <li>≥90% signals labeled with taxonomy + type</li>
+                <li>Summaries accurate to source &amp; within length limits</li>
+                <li>≥80% non-trivial signals have ≥1 entity extracted</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="agent-title"><span class="agent-code">B3</span><h3>Relevance &amp; Routing — &ldquo;The Company&rdquo; Lens</h3></div>
+        <p class="muted">Scores relevance/novelty/urgency and routes signals to domain pods and audiences.</p>
+        <div class="grid2">
+          <div>
+            <h4>What it does</h4>
+            <ul class="small-list">
+              <li>Scores: relevance, novelty, urgency, impact, credibility baseline</li>
+              <li>Routing tags: domains, themes, personas, time horizon</li>
+              <li>2–3 bullet rationale: &ldquo;why this matters for The Company&rdquo;</li>
+            </ul>
+          </div>
+          <div>
+            <h4>I/O</h4>
+            <p class="crit"><b>In:</b> <span class="pill event">signal.enriched</span>, lens profiles, historical archive</p>
+            <p class="crit"><b>Out:</b> <span class="pill event">signal.scored</span></p>
+            <div class="crit"><b>Acceptance:</b>
+              <ul>
+                <li>Precision ≥0.75, recall ≥0.70 for 'high relevance' on labeled set</li>
+                <li>≥95% high-relevance signals have coherent rationale</li>
+                <li>Latency signal.created → scored within SLA</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="agent-title"><span class="agent-code">B4</span><h3>Deduplication &amp; Clustering</h3></div>
+        <p class="muted">Reduces noise and builds storylines across time windows.</p>
+        <div class="grid2">
+          <div>
+            <h4>What it does</h4>
+            <ul class="small-list">
+              <li>Near-duplicate detection (hash + similarity)</li>
+              <li>Cluster signals into storylines with labels and descriptors</li>
+              <li>Detect bursts + persistent growth; flag emerging themes</li>
+            </ul>
+          </div>
+          <div>
+            <h4>I/O</h4>
+            <p class="crit"><b>In:</b> <span class="pill event">signal.scored</span>, embeddings, window config</p>
+            <p class="crit"><b>Out:</b> <span class="pill event">cluster.updated</span></p>
+            <div class="crit"><b>Acceptance:</b>
+              <ul>
+                <li>Reviewers report ≥30% reduction in repeated reading</li>
+                <li>Cluster labels coherent ≥80% for top clusters</li>
+                <li>Burst detection: ≥8/10 obvious spikes in backtest</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="agent-title"><span class="agent-code">B5</span><h3>Insight Drafting — So-What for &ldquo;The Company&rdquo;</h3></div>
+        <p class="muted">Turns clusters into decision-relevant insight drafts with evidence, confidence and actions.</p>
+        <div class="grid2">
+          <div>
+            <h4>What it does</h4>
+            <ul class="small-list">
+              <li>Standard template: what happened · evidence · implications · time horizon · uncertainties</li>
+              <li>Recommended actions: watch / experiment / engage + owners</li>
+              <li>Two versions: Exec one-pager + Analyst detail</li>
+              <li>Explicit confidence and uncertainty language</li>
+            </ul>
+          </div>
+          <div>
+            <h4>I/O</h4>
+            <p class="crit"><b>In:</b> <span class="pill event">cluster.updated</span>, retrieval pack, context pack</p>
+            <p class="crit"><b>Out:</b> <span class="pill event">insight.created</span></p>
+            <div class="crit"><b>Acceptance:</b>
+              <ul>
+                <li>≥90% insights include ≥3 citations</li>
+                <li>Usefulness ≥3.5/5 avg after review</li>
+                <li>Every insight: time horizon + explicit uncertainties</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="agent-title"><span class="agent-code">B6</span><h3>Publishing &amp; Distribution</h3></div>
+        <p class="muted">Compiles approved insights into briefs, dashboards and notifications.</p>
+        <div class="grid2">
+          <div>
+            <h4>What it does</h4>
+            <ul class="small-list">
+              <li>Weekly brief + monthly theme deep dives from approved insights</li>
+              <li>Update dashboards: trend radar, cluster timelines, watchlists</li>
+              <li>Publish to SharePoint / Teams / email with audience ACLs</li>
+              <li>Product history + changelog</li>
+            </ul>
+          </div>
+          <div>
+            <h4>I/O</h4>
+            <p class="crit"><b>In:</b> <span class="pill event">insight.approved</span>, templates, calendar, audience ACLs</p>
+            <p class="crit"><b>Out:</b> <span class="pill event">product.published</span></p>
+            <div class="crit"><b>Acceptance:</b>
+              <ul>
+                <li>Weekly brief produced within SLA</li>
+                <li>Only approved insights publish (hard gate)</li>
+                <li>Artifacts include citations + trace metadata</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section data-menu-title="Tier 2 — Intelligence Upgrades">
+      <section>
+        <h2>Tier 2 — Intelligence Upgrades <span class="badge t2">Upgrade</span></h2>
+        <p class="muted">Trust, depth and strategic usefulness — added <i>after</i> the MVP pipeline is stable.</p>
+        <div class="grid5" style="margin-top:1.5em">
+          <div class="card tier2"><h4>C1</h4><p class="crit">Evidence &amp; Credibility</p></div>
+          <div class="card tier2"><h4>C2</h4><p class="crit">Contrarian / Red Team</p></div>
+          <div class="card tier2"><h4>C3</h4><p class="crit">Trend Trajectory</p></div>
+          <div class="card tier2"><h4>C4</h4><p class="crit">Scenario Hooks</p></div>
+          <div class="card tier2"><h4>C5</h4><p class="crit">Impact &amp; Dependency Mapper</p></div>
+        </div>
+        <p class="center muted" style="margin-top:1.5em">↓ drill into each upgrade</p>
+      </section>
+
+      <section>
+        <div class="agent-title"><span class="agent-code">C1</span><h3>Evidence &amp; Credibility</h3></div>
+        <p class="muted">Triangulates claims, scores credibility, reduces hype, adds evidence notes.</p>
+        <div class="grid2">
+          <div>
+            <h4>What it does</h4>
+            <ul class="small-list">
+              <li>Credibility score from source reputation + corroboration</li>
+              <li>Flags speculative vs confirmed; maps claims to evidence</li>
+              <li>Suggests what additional evidence would raise confidence</li>
+            </ul>
+          </div>
+          <div class="crit">
+            <h4>Acceptance</h4>
+            <ul>
+              <li>≥80% 'high confidence' insights have ≥2 independent sources</li>
+              <li>Reviewers report fewer 'hype' items after introduction</li>
+              <li>All credibility adjustments are explainable</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="agent-title"><span class="agent-code">C2</span><h3>Contrarian / Red Team</h3></div>
+        <p class="muted">Challenges assumptions, provides counterarguments and falsification tests.</p>
+        <div class="grid2">
+          <div>
+            <h4>What it does</h4>
+            <ul class="small-list">
+              <li>Strongest counterargument + alternative interpretations</li>
+              <li>Failure modes + what evidence would falsify the insight</li>
+              <li>Balanced language + caveats for publication</li>
+            </ul>
+          </div>
+          <div class="crit">
+            <h4>Acceptance</h4>
+            <ul>
+              <li>≥70% of high-impact insights improved by red-team pass</li>
+              <li>Red team notes professional &amp; evidence-based (no opinion-only)</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="agent-title"><span class="agent-code">C3</span><h3>Trend Trajectory</h3></div>
+        <p class="muted">Tracks clusters over time; detects acceleration, deceleration and inflection points.</p>
+        <div class="grid2">
+          <div>
+            <h4>What it does</h4>
+            <ul class="small-list">
+              <li>Per-cluster time series: volume, source diversity, geo spread</li>
+              <li>Detect inflection points + leading indicators</li>
+              <li>Stage label: emerging / growing / mature / declining</li>
+            </ul>
+          </div>
+          <div class="crit">
+            <h4>Acceptance</h4>
+            <ul>
+              <li>Backtest identifies ≥8/10 obvious accelerations</li>
+              <li>Trajectory notes align with analyst judgement ≥70% in pilot</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="agent-title"><span class="agent-code">C4</span><h3>Scenario Hooks</h3></div>
+        <p class="muted">Maps signals to scenario assumptions and triggers alerts when assumptions shift.</p>
+        <div class="grid2">
+          <div>
+            <h4>What it does</h4>
+            <ul class="small-list">
+              <li>Maintain assumption register + thresholds</li>
+              <li>Map clusters to assumptions strengthened/weakened</li>
+              <li>Trigger scenario hook alerts with rationale + evidence</li>
+            </ul>
+          </div>
+          <div class="crit">
+            <h4>Acceptance</h4>
+            <ul>
+              <li>Scenario hook alerts relevant ≥70% in pilot</li>
+              <li>Every alert includes rationale + evidence links</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="agent-title"><span class="agent-code">C5</span><h3>Impact &amp; Dependency Mapper</h3></div>
+        <p class="muted">Transforms insights into value-chain impact maps and dependency/risk registers.</p>
+        <div class="grid2">
+          <div>
+            <h4>What it does</h4>
+            <ul class="small-list">
+              <li>Identify impacted value chains + key dependencies (vendors, standards, regulation, skills)</li>
+              <li>Propose mitigation / enablement / experimentation options</li>
+              <li>Populate structured risk/opportunity register entries</li>
+            </ul>
+          </div>
+          <div class="crit">
+            <h4>Acceptance</h4>
+            <ul>
+              <li>Stakeholders rate impact maps actionable ≥3.5/5</li>
+              <li>Every high-impact insight has ≥1 proposed action + owner</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section data-menu-title="Tier 3 — Domain Pods">
+      <section>
+        <h2>Tier 3 — Domain Pods <span class="badge t3">Pods</span></h2>
+        <p class="muted">Twelve domains. Each pod composes Tier 0–2 agents + thin micro-agents on demand.</p>
+        <p style="margin-top:1em">Pods <b>share</b> the same capability agents. They <b>add</b> domain micro-agents only where deeper coverage is required. Micro-agents run <b>on-demand</b> to control cost and noise.</p>
+        <p class="center muted" style="margin-top:2em">↓ Digital/AI pod — the reference implementation</p>
+      </section>
+
+      <section>
+        <h3>Pod: Digital / AI <span class="badge t3">Reference</span></h3>
+        <p class="muted">Domain-specific foresight with consistent signal → insight → product delivery.</p>
+        <div class="grid3" style="margin-top:1em">
+          <div class="micro"><b>Pod Lead / Synthesizer</b>Owns domain lens, prioritizes signals, commissions micro-analyses, produces weekly synthesis.</div>
+          <div class="micro"><b>Regulation &amp; Standards</b>Tracks regulations, directives, standards drafts/releases and compliance timelines.</div>
+          <div class="micro"><b>Market &amp; Ecosystem</b>Vendors, competitors, partnerships, M&amp;A, commercial offerings.</div>
+          <div class="micro"><b>Academic &amp; Frontier Research</b>Peer-reviewed, arXiv, labs, reproducibility, maturity indicators.</div>
+          <div class="micro"><b>Patents &amp; IP Signals</b>Patent trends, where investment is going, key assignees.</div>
+          <div class="micro"><b>Incidents &amp; Ops Learnings</b>Public incidents, failures, near-misses, lessons.</div>
+          <div class="micro"><b>Adoption / Maturity / Readiness</b>TRL-like heuristics, adoption constraints, dependencies, timing.</div>
+          <div class="micro"><b>Customer Q&amp;A / Explainer</b>Domain explainers + stakeholder Q&amp;A from approved knowledge base.</div>
+          <div class="micro"><b>Foundation Model &amp; Platform Watch</b>Frontier model releases, enterprise AI platforms, governance, toolchains.</div>
+          <div class="micro" style="grid-column: span 3"><b>Data / Architecture Patterns</b>Data mesh/fabric, lakehouse, MLOps, agentic architectures, interoperability, reference architectures.</div>
+        </div>
+        <p class="center muted" style="margin-top:1em">Same pattern replicates across the other 11 domains.</p>
+      </section>
+    </section>
+
+    <!-- ============== AZURE DEPLOYMENT ============== -->
+    <section data-menu-title="Azure Deployment">
+      <section>
+        <h2>Azure deployment architecture <span class="badge az">Azure-first</span></h2>
+        <p class="muted">Mapping the agent factory onto an Azure-first enterprise estate.</p>
+        <div class="grid2" style="margin-top:1em">
+          <div class="card">
+            <h4>The headline</h4>
+            <p class="crit">Event-driven <b>Container Apps + AI Foundry agents</b>, with <b>Service Bus</b> as the canonical event spine and <b>AI Search + Blob + Cosmos</b> as the Knowledge Store.</p>
+          </div>
+          <div class="card">
+            <h4>Why this scales</h4>
+            <p class="crit">Compute, events, identity and AI are all <i>elastic + managed</i>. MVP → ~100 agents without re-architecting.</p>
+          </div>
+        </div>
+        <p class="center" style="margin-top:1em; font-size:0.9em">
+          <span class="pill">Container Apps</span>
+          <span class="pill">AI Foundry</span>
+          <span class="pill">Service Bus</span>
+          <span class="pill">AI Search</span>
+          <span class="pill">Cosmos DB</span>
+          <span class="pill">Entra ID</span>
+          <span class="pill">Purview</span>
+          <span class="pill">APIM</span>
+        </p>
+        <p class="center muted" style="margin-top:1em">↓ reference diagram · service mapping · deployment · key decisions</p>
+      </section>
+
+      <!-- Reference diagram -->
+      <section>
+        <h3>Reference architecture — service swim lanes</h3>
+        <div class="azlane">
+          <div class="lbl">Edge &amp; Identity</div>
+          <div class="cells three">
+            <div class="azbox"><b>Front Door + WAF</b><span class="svc">Public ingress, DDoS, TLS</span></div>
+            <div class="azbox"><b>API Management</b><span class="svc">Auth, quotas, audit, versioning</span></div>
+            <div class="azbox"><b>Entra ID + Managed Identities</b><span class="svc">Service + user identity, scopes</span></div>
+          </div>
+        </div>
+        <div class="azlane">
+          <div class="lbl">Agent Runtime</div>
+          <div class="cells three">
+            <div class="azbox"><b>Container Apps + Dapr</b><span class="svc">Tier 0 + B1/B4/B6 — custom logic</span></div>
+            <div class="azbox"><b>AI Foundry Agent Service</b><span class="svc">B2/B3/B5, Tier 2, pod micro-agents</span></div>
+            <div class="azbox"><b>Durable Functions</b><span class="svc">A0 state machine, retries, gates</span></div>
+          </div>
+        </div>
+        <div class="azlane">
+          <div class="lbl">Event Spine</div>
+          <div class="cells two">
+            <div class="azbox"><b>Service Bus topics</b><span class="svc">Canonical events: signal.* / cluster.* / insight.* / product.*</span></div>
+            <div class="azbox"><b>Event Grid</b><span class="svc">System notifications, fan-out to Logic Apps / Teams</span></div>
+          </div>
+        </div>
+        <div class="azlane">
+          <div class="lbl">Knowledge Store</div>
+          <div class="cells four">
+            <div class="azbox"><b>Blob (WORM)</b><span class="svc">Raw artifacts, immutable, hashed</span></div>
+            <div class="azbox"><b>Cosmos DB</b><span class="svc">Signals, clusters, insights + change feed</span></div>
+            <div class="azbox"><b>AI Search</b><span class="svc">Vector + hybrid + semantic ranker</span></div>
+            <div class="azbox"><b>Cosmos Gremlin / Fabric</b><span class="svc">Optional knowledge graph</span></div>
+          </div>
+        </div>
+        <div class="azlane">
+          <div class="lbl">AI / Models</div>
+          <div class="cells two">
+            <div class="azbox"><b>Azure OpenAI — PTU</b><span class="svc">Hot path: B3, B5, pod synth</span></div>
+            <div class="azbox"><b>Azure OpenAI — PAYG + Content Safety</b><span class="svc">Tail agents, dev, safety filters</span></div>
+          </div>
+        </div>
+        <div class="azlane">
+          <div class="lbl">Governance &amp; HITL</div>
+          <div class="cells four">
+            <div class="azbox"><b>Microsoft Purview</b><span class="svc">Classification, lineage, DLP</span></div>
+            <div class="azbox"><b>Key Vault</b><span class="svc">Secrets, keys, certs</span></div>
+            <div class="azbox"><b>Teams Adaptive Cards</b><span class="svc">Approval gate UI (HITL)</span></div>
+            <div class="azbox"><b>Defender for Cloud</b><span class="svc">Posture, threat detection</span></div>
+          </div>
+        </div>
+        <div class="azlane">
+          <div class="lbl">Publish &amp; Observe</div>
+          <div class="cells four">
+            <div class="azbox"><b>Microsoft Graph</b><span class="svc">SharePoint / Teams / Outlook</span></div>
+            <div class="azbox"><b>Power BI</b><span class="svc">Trend radar, dashboards</span></div>
+            <div class="azbox"><b>App Insights + Log Analytics</b><span class="svc">Distributed trace per agent-run</span></div>
+            <div class="azbox"><b>Azure Monitor Workbooks</b><span class="svc">Eval dashboards, audit views</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Service mapping table -->
+      <section>
+        <h3>Service mapping — by concern</h3>
+        <table class="compact">
+          <thead><tr><th>Concern</th><th>Azure service</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td><b>Agent runtime</b></td><td>Container Apps (Dapr + KEDA), Functions</td><td>Scale-to-zero, event-triggered, per-agent isolation</td></tr>
+            <tr><td><b>LLM agents</b></td><td>AI Foundry Agent Service + Azure OpenAI</td><td>Built-in tool use, threads, evaluations</td></tr>
+            <tr><td><b>Orchestration (A0)</b></td><td>Durable Functions <i>or</i> Foundry orchestration</td><td>Replayable state machines, idempotent retries</td></tr>
+            <tr><td><b>Event backbone</b></td><td>Service Bus + Event Grid</td><td>Ordered, transactional, DLQ built in</td></tr>
+            <tr><td><b>Raw artifacts (A3)</b></td><td>Blob (WORM + versioning)</td><td>Cheap, immutable, lineage-friendly</td></tr>
+            <tr><td><b>Structured store (A3)</b></td><td>Cosmos DB</td><td>Schema-flex + change feed for downstream</td></tr>
+            <tr><td><b>Vector index (A3)</b></td><td>Azure AI Search</td><td>Hybrid + semantic ranker in one index</td></tr>
+            <tr><td><b>Policy (A1)</b></td><td>Content Safety + Purview + custom rules</td><td>PII/IP detection + enterprise data governance</td></tr>
+            <tr><td><b>Evals (A2)</b></td><td>AI Foundry Evaluations + Prompt Flow</td><td>Versioned eval runs gate promotion</td></tr>
+            <tr><td><b>API surface</b></td><td>API Management + Entra + Private Endpoints</td><td>One enforcement point: rate, scope, audit</td></tr>
+            <tr><td><b>HITL approvals</b></td><td>Teams Adaptive Cards + Power Automate</td><td>Reviewers approve without leaving Teams</td></tr>
+            <tr><td><b>Publishing (B6)</b></td><td>Microsoft Graph + Power BI</td><td>Native to enterprise Microsoft tenants</td></tr>
+            <tr><td><b>Observability</b></td><td>App Insights + Log Analytics (immutable)</td><td>Trace per agent-run; auditable</td></tr>
+            <tr><td><b>IaC / CI-CD</b></td><td>Bicep/Terraform + GitHub Actions + AVM</td><td>Landing-zone aligned, repeatable per pod</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- How tiers deploy -->
+      <section>
+        <h3>How the tiers deploy on Azure</h3>
+        <div class="grid2" style="margin-top:0.5em">
+          <div class="card tier0">
+            <h4>Tier 0 — Control Plane</h4>
+            <p class="crit">Shared Container Apps environment · hardened · private VNet · restricted RBAC. Changes rarely. Active/standby across regions for DR.</p>
+          </div>
+          <div class="card tier1">
+            <h4>Tier 1 — Core Production</h4>
+            <p class="crit">Second Container Apps environment. Each B1–B6 is a revision-versioned app. <b>KEDA</b> scales on Service Bus queue depth.</p>
+          </div>
+          <div class="card tier2">
+            <h4>Tier 2 — Upgrades</h4>
+            <p class="crit">Invoked only when A0 routes a high-value insight. Use <b>Container Apps Jobs</b> (on-demand) to keep cost down.</p>
+          </div>
+          <div class="card tier3">
+            <h4>Tier 3 — Pods</h4>
+            <p class="crit">One <b>Foundry Project</b> per domain pod. Pod Lead is a Container App that calls shared Tier 0–2 + the pod's own micro-agents.</p>
+          </div>
+        </div>
+        <p class="muted" style="margin-top:1em; font-size:0.78em"><b>Subscriptions:</b> <span class="pill">prod</span><span class="pill">nonprod</span><span class="pill">data</span> (Knowledge Store) <span class="pill">shared</span> (APIM, Front Door) — all inside an <b>Azure Landing Zone</b>.</p>
+      </section>
+
+      <!-- Three enterprise decisions -->
+      <section>
+        <h3>The three enterprise decisions that matter most</h3>
+        <div class="grid3" style="margin-top:1em">
+          <div class="card tier0">
+            <h4>1. Landing zone first</h4>
+            <p class="crit">Drop this into an <b>Azure Landing Zone</b> — hub-spoke, policy-as-code, corp connectivity. Don't roll your own networking. Subscriptions: prod / nonprod / data / shared.</p>
+          </div>
+          <div class="card tier1">
+            <h4>2. PTU vs PAYG for OpenAI</h4>
+            <p class="crit">At ~100 agents the hot path (B3, B5, pod synth) needs <b>Provisioned Throughput Units</b> — predictable latency, capped cost. PAYG for tail + Tier 2 specialists.</p>
+          </div>
+          <div class="card tier2">
+            <h4>3. Purview as governance backbone</h4>
+            <p class="crit">Wire Blob, Cosmos and AI Search into <b>Microsoft Purview</b>. Classification (A1) and lineage (published → cluster → signal → raw) become centrally queryable.</p>
+          </div>
+        </div>
+        <aside class="notes">
+          These three are load-bearing. Getting them wrong means re-platforming later. Get them right and the rest is incremental.
+        </aside>
+      </section>
+
+      <!-- Tradeoff: Foundry vs custom -->
+      <section>
+        <h3>Tradeoff — Foundry Agents vs. custom Container Apps</h3>
+        <div class="grid2" style="margin-top:0.5em">
+          <div class="card">
+            <h4>AI Foundry Agent Service</h4>
+            <p class="crit">✓ Faster to ship<br>✓ Threads, tool use, evals for free<br>✓ Versioning + tracing built in</p>
+            <p class="crit">✗ Opinionated, newer surface<br>✗ Less control over idempotency keys, retry semantics</p>
+          </div>
+          <div class="card">
+            <h4>Custom Container App</h4>
+            <p class="crit">✓ Full control over state, retries, gates<br>✓ Use any framework (Semantic Kernel, AutoGen, LangGraph)<br>✓ Mature ops story</p>
+            <p class="crit">✗ More code to own<br>✗ You build threading, tracing, eval hooks yourself</p>
+          </div>
+        </div>
+        <p class="center" style="margin-top:1em; color:var(--accent)"><b>Pragmatic mix:</b> Tier 0 + B1/B4/B6 as custom Container Apps · B2/B3/B5 + all Tier 2 + pod micro-agents as Foundry Agents</p>
+      </section>
+    </section>
+
+    <section data-menu-title="Wrap-up">
+      <section>
+        <h2>What this gets us</h2>
+        <div class="grid2" style="margin-top:1em">
+          <div class="card">
+            <h4>Scale</h4>
+            <p class="crit">A handful of agents today → ~100 across 12 domains, without 10× the maintenance.</p>
+          </div>
+          <div class="card">
+            <h4>Trust</h4>
+            <p class="crit">Every published item: traceable evidence, explicit uncertainty, policy-gated.</p>
+          </div>
+          <div class="card">
+            <h4>Speed</h4>
+            <p class="crit">Event-driven pipeline. Specialists fire only when justified. Weekly brief on schedule.</p>
+          </div>
+          <div class="card">
+            <h4>Learning</h4>
+            <p class="crit">Evals + drift detection mean the system gets <i>measurably</i> better, not just busier.</p>
+          </div>
+        </div>
+      </section>
+      <section class="center">
+        <h2>Discussion</h2>
+        <p class="muted" style="margin-top:1.5em">Press <kbd>M</kbd> for the menu · <kbd>O</kbd> for overview · <kbd>/</kbd> to search</p>
+        <p style="margin-top:3em; color:var(--accent)">Where do we start the MVP?</p>
+      </section>
+    </section>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/search/search.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js-menu@2.1.0/menu.js"></script>
+
+<script>
+  Reveal.initialize({
+    hash: true,
+    slideNumber: 'c/t',
+    transition: 'fade',
+    backgroundTransition: 'fade',
+    controls: true,
+    progress: true,
+    center: false,
+    width: 1280,
+    height: 800,
+    margin: 0.06,
+    minScale: 0.3,
+    maxScale: 2.0,
+    menu: {
+      side: 'left',
+      width: 'normal',
+      numbers: true,
+      titleSelector: 'h1, h2, h3',
+      useTextContentForMissingTitles: true,
+      hideMissingTitles: false,
+      markers: true,
+      custom: false,
+      themes: false,
+      transitions: false,
+      openButton: true,
+      openSlideNumber: false,
+      keyboard: true,
+      sticky: false,
+      autoOpen: true,
+      delayInit: false,
+      openOnInit: false,
+      loadIcons: true
+    },
+    plugins: [ RevealHighlight, RevealNotes, RevealSearch, RevealMenu ]
+  });
+</script>
+</body>
+</html>
