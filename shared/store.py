@@ -102,6 +102,15 @@ CREATE TABLE IF NOT EXISTS clusters (
   data JSON NOT NULL,
   updated_at TEXT
 );
+CREATE TABLE IF NOT EXISTS cluster_metrics (
+  cluster_id TEXT NOT NULL,
+  ts TEXT NOT NULL,
+  volume INTEGER NOT NULL,
+  source_diversity INTEGER NOT NULL,
+  geo_spread INTEGER NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_cluster_metrics_cluster_ts
+  ON cluster_metrics(cluster_id, ts);
 CREATE TABLE IF NOT EXISTS insights (
   id TEXT PRIMARY KEY,
   data JSON NOT NULL,
@@ -171,6 +180,37 @@ class Db:
         with self._conn() as c:
             rows = c.execute("SELECT data FROM clusters ORDER BY updated_at DESC").fetchall()
             return [Cluster(**json.loads(r["data"])) for r in rows]
+
+    # ── cluster metrics
+    def insert_cluster_metric(
+        self,
+        cluster_id: str,
+        ts: str,
+        volume: int,
+        source_diversity: int,
+        geo_spread: int,
+    ) -> None:
+        with self._lock, self._conn() as c:
+            c.execute(
+                "INSERT INTO cluster_metrics (cluster_id, ts, volume, source_diversity, geo_spread) VALUES (?,?,?,?,?)",
+                (cluster_id, ts, volume, source_diversity, geo_spread),
+            )
+
+    def list_cluster_metrics(self, cluster_id: str, limit: int = 30) -> List[Dict[str, Any]]:
+        with self._conn() as c:
+            rows = c.execute(
+                """
+                SELECT cluster_id, ts, volume, source_diversity, geo_spread
+                FROM cluster_metrics
+                WHERE cluster_id=?
+                ORDER BY ts DESC
+                LIMIT ?
+                """,
+                (cluster_id, limit),
+            ).fetchall()
+            metrics = [dict(r) for r in rows]
+            metrics.reverse()
+            return metrics
 
     # ── insights
     def upsert_insight(self, i: Insight) -> None:

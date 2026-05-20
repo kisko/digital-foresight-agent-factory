@@ -1,6 +1,7 @@
 # Tier 2 — Intelligence Upgrades
 
-Stubbed for the prototype. Add these once the MVP pipeline is stable.
+C3 is implemented in the prototype; the other upgrades remain ready for
+focused contributions once the MVP pipeline is stable.
 
 | Agent | Trigger | What it adds |
 |---|---|---|

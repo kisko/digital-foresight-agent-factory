@@ -19,6 +19,7 @@ class Events:
     SIGNAL_ENRICHED     = "signal.enriched"
     SIGNAL_SCORED       = "signal.scored"
     CLUSTER_UPDATED     = "cluster.updated"
+    TRAJECTORY_INFLECTION = "trajectory.inflection"
     INSIGHT_CREATED     = "insight.created"
     INSIGHT_REVIEWED    = "insight.reviewed"
     INSIGHT_APPROVED    = "insight.approved"
@@ -30,7 +31,7 @@ class Events:
 
     ALL = [
         SIGNAL_CREATED, SIGNAL_ENRICHED, SIGNAL_SCORED,
-        CLUSTER_UPDATED,
+        CLUSTER_UPDATED, TRAJECTORY_INFLECTION,
         INSIGHT_CREATED, INSIGHT_REVIEWED, INSIGHT_APPROVED,
         PRODUCT_PUBLISHED,
         AGENT_ERROR, EVAL_REPORT_CREATED,
@@ -94,6 +95,7 @@ class Cluster:
     descriptor: str
     signal_ids: List[str]
     burst_score: float = 0.0
+    trajectory: Optional[str] = None
     updated_at: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
 

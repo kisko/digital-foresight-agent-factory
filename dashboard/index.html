@@ -170,6 +170,16 @@
   .agent-chip.t2 { color:var(--tier2); border-color:rgba(179,136,255,0.4); }
   .agent-chip.t3 { color:var(--tier3); border-color:rgba(102,231,164,0.4); }
 
+  /* ── clusters ── */
+  .cluster-row {
+    display:grid; grid-template-columns: 1fr auto; gap:12px; align-items:center;
+    background:var(--panel2); border-radius:8px; padding:10px 12px;
+    margin-bottom:8px; border-left:3px solid var(--tier2);
+  }
+  .cluster-row h3 { margin:0 0 5px; font-size:13px; font-weight:600; }
+  .cluster-spark { width:96px; height:28px; overflow:visible; }
+  .cluster-spark polyline { fill:none; stroke:var(--tier2); stroke-width:2; }
+
   /* ── insights ── */
   .insight {
     background:var(--panel2); border-radius:10px; padding:12px 14px;
@@ -212,6 +222,7 @@
   .ev .topic.signal\.enriched { color:#a9b2c2; }
   .ev .topic.signal\.scored   { color:#38c1ff; }
   .ev .topic.cluster\.updated { color:#b388ff; }
+  .ev .topic.trajectory\.inflection { color:#b388ff; font-weight:700; }
   .ev .topic.insight\.created { color:#ff7e3a; }
   .ev .topic.insight\.approved{ color:#66e7a4; }
   .ev .topic.product\.published{ color:#66e7a4; font-weight:700; }
@@ -334,9 +345,19 @@
       <p class="caption">
         <b style="color:var(--tier0)">Tier 0</b> = control plane (orchestration, policy, evals, knowledge store) ·
         <b style="color:var(--tier1)">Tier 1</b> = production line (B1–B6) ·
-        <b style="color:var(--tier3)">Tier 3</b> = domain pods. Tier 2 (intelligence upgrades) is stubbed for the prototype — see <a href="https://github.com/kisko/digital-foresight-agent-factory/issues" target="_blank" style="color:var(--accent2)">open issues</a> to contribute.
+        <b style="color:var(--tier2)">Tier 2</b> = intelligence upgrades ·
+        <b style="color:var(--tier3)">Tier 3</b> = domain pods.
       </p>
       <div id="agents"></div>
+    </div>
+
+    <!-- ── CLUSTERS ── -->
+    <div class="panel">
+      <h2>
+        Cluster trajectories
+        <span class="info" data-tip="C3 tracks rolling 7-day volume for each cluster and labels whether the storyline is emerging, growing, mature, or declining.">i</span>
+      </h2>
+      <div id="clusters"></div>
     </div>
 
     <!-- ── INSIGHTS ── -->
@@ -456,10 +477,11 @@ const AGENT_ROLES = {
   "b4.cluster":            { tier:"t1", role:"Deduplicates and groups signals into storylines (clusters) by primary taxonomy + similarity." },
   "b5.insight":            { tier:"t1", role:"Drafts an insight per qualifying cluster: what happened, evidence, implications, actions." },
   "b6.publish":            { tier:"t1", role:"Renders approved insights to Markdown briefs. In Azure: publishes to SharePoint / Teams / Outlook." },
+  "c3.trajectory":         { tier:"t2", role:"Tracks rolling cluster volume, labels trajectory, and emits inflection events." },
   "pod.digital_ai.lead":   { tier:"t3", role:"Digital/AI pod synthesizer (skeleton). Adopts insights matching the pod's taxonomy for weekly synthesis." },
 };
 
-let state = { insights: [], products: [], agents: [] };
+let state = { insights: [], products: [], agents: [], clusters: [] };
 
 // ── intro / glossary toggles (persisted in localStorage) ──────────
 function toggleIntro(){
@@ -519,6 +541,35 @@ function renderAgents(){
     return `<div class="tier-group"><div class="tier-label">${tierLabels[t]}</div><div class="agents-row">${chips}</div></div>`;
   }).join('');
   document.getElementById('agents').innerHTML = html;
+}
+
+function sparkline(metrics){
+  const vols = (metrics || []).map(m => Number(m.volume || 0));
+  if (!vols.length) return '<svg class="cluster-spark" viewBox="0 0 96 28"></svg>';
+  const max = Math.max(...vols, 1);
+  const step = vols.length > 1 ? 96 / (vols.length - 1) : 96;
+  const points = vols.map((v, i) => `${Math.round(i * step)},${Math.round(26 - (v / max) * 24)}`).join(' ');
+  return `<svg class="cluster-spark" viewBox="0 0 96 28"><polyline points="${points}"/></svg>`;
+}
+
+function renderClusters(){
+  if (!state.clusters.length){
+    document.getElementById('clusters').innerHTML = '<div class="empty">No clusters yet.</div>';
+    return;
+  }
+  document.getElementById('clusters').innerHTML = state.clusters.slice(0, 8).map(c => `
+    <div class="cluster-row">
+      <div>
+        <h3>${c.label}</h3>
+        <div class="meta">
+          <span class="pill">${c.id}</span>
+          <span class="pill">${c.trajectory || 'emerging'}</span>
+          <span class="pill">${(c.signal_ids || []).length} signals</span>
+        </div>
+      </div>
+      ${sparkline(c.metrics)}
+    </div>
+  `).join('');
 }
 
 function renderInsights(){
@@ -604,21 +655,24 @@ function pushEvent(ev){
 
 async function refresh(){
   try {
-    const [pipeline, insights, products, agents] = await Promise.all([
+    const [pipeline, insights, products, agents, clusters] = await Promise.all([
       fetch('/pipeline').then(r => r.json()),
       fetch('/insights').then(r => r.json()),
       fetch('/products').then(r => r.json()),
       fetch('/agents').then(r => r.json()),
+      fetch('/clusters').then(r => r.json()),
     ]);
     renderStages(pipeline.stages);
     state.insights = insights;
     state.products = products;
     state.agents = agents;
+    state.clusters = clusters;
     document.getElementById('llm-badge').textContent = `llm: ${pipeline.llm_mode}`;
     document.getElementById('llm-badge').classList.toggle('warn', pipeline.llm_mode === 'stub');
     renderInsights();
     renderProducts();
     renderAgents();
+    renderClusters();
   } catch (e) {
     console.error('refresh failed', e);
   }

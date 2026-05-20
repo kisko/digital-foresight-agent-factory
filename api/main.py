@@ -33,6 +33,8 @@ from tier1.b4_cluster import B4Cluster
 from tier1.b5_insight import B5Insight
 from tier1.b6_publish import B6Publish
 
+from tier2.c3_trajectory import C3Trajectory
+
 from pods.digital_ai.pod_lead import DigitalAIPodLead
 
 
@@ -66,6 +68,7 @@ async def lifespan(app: FastAPI):
     agents["b2"] = B2Normalize(bus, store, llm)
     agents["b3"] = B3Relevance(bus, store, llm)
     agents["b4"] = B4Cluster(bus, store, llm)
+    agents["c3"] = C3Trajectory(bus, store, llm)
     agents["b5"] = B5Insight(bus, store, llm)
     agents["b6"] = B6Publish(bus, store, llm)
     agents["pod.digital_ai"] = DigitalAIPodLead(bus, store, llm)
@@ -139,7 +142,12 @@ def get_signal(sid: str):
 # ─── Clusters ──────────────────────────────────────────────────────────────
 @app.get("/clusters")
 def list_clusters():
-    return [asdict(c) for c in store.db.list_clusters()]
+    clusters = []
+    for cluster in store.db.list_clusters():
+        data = asdict(cluster)
+        data["metrics"] = store.db.list_cluster_metrics(cluster.id, limit=14)
+        clusters.append(data)
+    return clusters
 
 
 @app.get("/clusters/{cid}")
@@ -147,7 +155,9 @@ def get_cluster(cid: str):
     c = store.db.get_cluster(cid)
     if not c:
         raise HTTPException(404, "cluster not found")
-    return asdict(c)
+    data = asdict(c)
+    data["metrics"] = store.db.list_cluster_metrics(c.id, limit=30)
+    return data
 
 
 # ─── Insights ──────────────────────────────────────────────────────────────
